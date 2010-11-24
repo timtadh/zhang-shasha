@@ -43,6 +43,8 @@ class TreeDefinition(object):
         self.tree_structure_ids[self.get_node_id(n)] = indexed_children
     
     def set_post_ordering(self, counter, a_node_label):
+        """Fill in node IDs in post-order"""
+        
         internal_counter = counter
         for child in self.get_children(a_node_label):
             internal_counter = self.set_post_ordering(internal_counter, child)

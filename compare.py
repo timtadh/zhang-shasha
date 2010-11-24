@@ -17,35 +17,36 @@ RENAME = 2
 IDENTITY = 3
 
 def distance(a, b):
+    """Find the edit distance between two trees specified using the test_metricspace.py format"""
     return find_distance_raw(tree.convert_tree(a), tree.convert_tree(b))
 
-def multidim_arr(*dims):
-    return [multidim_arr(*dims[1:]) for i in xrange(dims[0])] if dims else 0
+def multidim_arr(val, *dims):
+    """Initialize a multidimensional array"""
+    return [multidim_arr(val, *dims[1:]) for i in xrange(dims[0])] if dims else val
 
 def default_replace_cost_func(a_node_id, b_node_id, a_tree, b_tree):
+    """Find cost to replace a_string with b_string"""
     a_string = a_tree.get_label_for_matching(a_node_id)
     b_string = b_tree.get_label_for_matching(b_node_id)
     
     return strdist(a_string, b_string)
 
 def find_distance_raw(a_tree, b_tree, ops=None):
-    """
-    This is initialised to be n+1 * m+1.  It should really be n*m
-    but because of java's zero indexing, the for loops would
-    look much more readable if the matrix is extended by one
-    column and row.  So, distance[0,*] and distance[*,0] should
-    be permanently zero.
-    """
+    """Find the edit distance between two trees in the tree.py format. Specify `ops` if
+    the cost functions need to be more sophisticated."""
+    
+    # Default cost functions
     ops = ops or {
         INSERT: lambda *args: 1,
         DELETE: lambda *args: 1,
         RENAME: default_replace_cost_func
     }
     
-    distance = multidim_arr(len(a_tree)+1, len(b_tree)+1)
-
-    # Preliminaries
-    #      1. Find left-most leaf and key roots
+    # For the most faithful reproduction of the algorithm given in the paper,
+    # we must use 1-indexing
+    distance = multidim_arr(0.0, len(a_tree)+1, len(b_tree)+1)
+    
+    # Find leftmost leaves and key roots
     a_left_leaf = {}
     b_left_leaf = {}
     a_tree_key_roots = []
@@ -96,23 +97,19 @@ def find_distance_raw(a_tree, b_tree, ops=None):
                             # Option 3: Rename
                             fD[a_left_leaf[i]-1][b_left_leaf[j]-1] + distance[i][j]
                         )
-    # print_table(distance, a_tree, b_tree)
+    
     return distance[len(a_tree)][len(b_tree)]
 
-def find_helper_tables(some_tree, leftmost_leaves, keyroots, a_node_id):
-    """
-    The initiating call should be to the root node of the tree.
-    It fills in an nxn (hash) table of the leftmost leaf for a
-    given node.  It also compiles an array of key roots. The
-    integer values IDs must come from the post-ordering of the
-    nodes in the tree.
-    """
-    find_helper_tables_recurse(some_tree, leftmost_leaves, keyroots, a_node_id)
+def find_helper_tables(some_tree, leftmost_leaves, keyroots, root_id):
+    """Finds leftmost leaves and keyroots for a tree. Node IDs must be derived from the 
+    post-ordering of the nodes."""
+    
+    find_helper_tables_recurse(some_tree, leftmost_leaves, keyroots, root_id)
 
-    # add root to keyroots
-    keyroots.append(a_node_id)
+    # Root node is a keyroot
+    keyroots.append(root_id)
 
-    # add boundary nodes
+    # Boundary
     leftmost_leaves[0] = 0
 
 def find_helper_tables_recurse(some_tree, leftmost_leaves, keyroots, a_node_id):
@@ -128,9 +125,3 @@ def find_helper_tables_recurse(some_tree, leftmost_leaves, keyroots, a_node_id):
                 seen_leftmost = True
             else:
                 keyroots.append(child)
-
-def print_table(table, left_tree, right_tree):
-    print "   %s" % '  '.join([left_tree.get_label(i) for i in xrange(1, len(table))])
-    for j in xrange(1, len(table)):
-        row = '  '.join([str(int(table[i][j])) for i in xrange(1, len(table))])
-        print "%s  %s" % (right_tree.get_label(j), row)
