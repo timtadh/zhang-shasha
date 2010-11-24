@@ -1,4 +1,4 @@
-import basic_tree
+import basic_tree, create_tree_helper
 
 def dictprint(items):
     print
@@ -29,13 +29,8 @@ if __name__ == '__main__':
     print "Number of nodes: %d" % a_basic_tree.get_node_count()
     print "Tree:"
     print a_basic_tree
-
-    # //Now test CreateTreeHelper
-    # TreeDefinition bBasicTree = null;
-
-    # if (argv.length == 1) {
-    #     bBasicTree = CreateTreeHelper.makeTree(argv[0]);
-    #     System.out.println("Input Tree: \n");
-    #     System.out.println("The number of nodes are: "+
-    #              bBasicTree.getNodeCount());
-    #     System.out.println("The tree is: \n"+bBasicTree);
+    
+    b_basic_tree = create_tree_helper.make_tree('a-b;a-c;c-d;c-e;c-f')
+    
+    print "Parsed tree:"
+    print b_basic_tree
