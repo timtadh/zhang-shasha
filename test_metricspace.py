@@ -9,7 +9,7 @@ import unittest, os, sys, base64, itertools, random, time
 import copy, collections
 from random import randint, seed, shuffle
 
-import compare
+from sleepytree import compare
 
 seed(os.urandom(15))
 
