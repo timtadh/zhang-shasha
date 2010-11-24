@@ -26,7 +26,7 @@ if __name__ == '__main__':
     a_basic_tree = tree.BasicTree(test_tree, 'a', tree.BasicTree.POSTORDER)
     
     print "Static test tree:"
-    print "Number of nodes: %d" % a_basic_tree.get_node_count()
+    print "Number of nodes: %d" % len(a_basic_tree)
     print "Tree:"
     print a_basic_tree
     

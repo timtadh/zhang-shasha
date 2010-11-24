@@ -64,7 +64,7 @@ class ComparisonZhangShasha(object):
             RENAME: default_replace_cost_func
         }
         
-        self.distance = multidim_arr(a_tree.get_node_count()+1, b_tree.get_node_count()+1)
+        self.distance = multidim_arr(len(a_tree)+1, len(b_tree)+1)
 
         # Preliminaries
         #      1. Find left-most leaf and key roots
@@ -116,7 +116,7 @@ class ComparisonZhangShasha(object):
                             fD[i][j] = self.distance[i][j]
                         else:
                             fD[i][j] = min(minimum, fD[a_left_leaf[i]-1][b_left_leaf[j]])
-        return self.distance[a_tree.get_node_count()][b_tree.get_node_count()]
+        return self.distance[len(a_tree)][len(b_tree)]
 
     def find_helper_tables(self, some_tree, leftmost_leaves, keyroots, a_node_id):
         """
