@@ -92,12 +92,13 @@ class BasicTree(TreeDefinition):
     Default is POSTORDER
     """
     
-    def __init__(self, ts=None, root=None, o=0):
+    def __init__(self, ts=None, root=None, o=None):
         """This takes a |e| x 2 array of string, where |e| is the number
         of edges."""
         super(BasicTree, self).__init__()
         self.root = root
         self.tree_structure = ts or {}
+        o = o or self.POSTORDER
         self.order_nodes(o)
         
         self.get_nodes = self.tree_structure.keys
@@ -125,7 +126,7 @@ class BasicTree(TreeDefinition):
 
 def convert_tree(root):
     t = convert_tree_recurse(collections.defaultdict(list), root)
-    return BasicTree(t, root.label, BasicTree.POSTORDER)
+    return BasicTree(t, root.label)
 
 def convert_tree_recurse(t, n):
     for c in n.children:
