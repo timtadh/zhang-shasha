@@ -1,15 +1,15 @@
-import create_tree_helper
+from create_tree_helper import make_tree
 
 from comparison_zhang_shasha import *
 from ops_zhang_shasha import *
 
-if __name__ == '__main__':
-    
-    a_tree = create_tree_helper.make_tree('a-b;a-c')
-    b_tree = create_tree_helper.make_tree('a-b;a-d')
-
+def distance(a, b):
     tree_corrector = ComparisonZhangShasha()
     costs = OpsZhangShasha()
-    transform = tree_corrector.find_distance(a_tree, b_tree, costs)
-    
-    print transform.get_cost()
+    transform = tree_corrector.find_distance(make_tree(a), make_tree(b), costs)
+    return transform.get_cost()
+
+if __name__ == '__main__':
+    assert distance('a-b;a-c', 'a-b;a-d') == 1
+    assert distance('a-b;a-c;b-e', 'a-b;a-c') == 2
+    print 'Success'
