@@ -1,9 +1,6 @@
 Sleepytree
 ==========
 
-Warning: This code does not work. Do not use it.
-================================================
-
 ### Estimate tree distance using the Zhang-Shasha algorithm
 
 "Zhang Shasha" -> "ZSS" -> "Zzz." Get it? Ha!

@@ -64,15 +64,15 @@ def find_distance_raw(a_tree, b_tree, ops=None):
             
             # for all descendents of aKeyroot: i
             for i in xrange(a_left_leaf[a_key_root], a_key_root+1):
-                new_val = fD[i-1][b_left_leaf[b_key_root]-1] + \
+                new_val = fD[i-1][b_left_leaf[b_key_root]] + \
                           ops[DELETE](i, 0, a_tree, b_tree)
-                fD[i][b_left_leaf[b_key_root]-1] = new_val
+                fD[i][b_left_leaf[b_key_root]] = new_val
 
             # for all descendents of bKeyroot: j
             for j in xrange(b_left_leaf[b_key_root], b_key_root+1):
-                new_val = fD[a_left_leaf[a_key_root]-1][j-1] + \
+                new_val = fD[a_left_leaf[a_key_root]][j-1] + \
                           ops[INSERT](0, j, a_tree, b_tree)
-                fD[a_left_leaf[a_key_root]-1][j] = new_val
+                fD[a_left_leaf[a_key_root]][j] = new_val
             
             # for all descendents of aKeyroot: i
             for i in xrange(a_left_leaf[a_key_root], a_key_root+1):
@@ -94,7 +94,7 @@ def find_distance_raw(a_tree, b_tree, ops=None):
                         fD[i][j] = distance[i][j]
                     else:
                         fD[i][j] = min(minimum, fD[a_left_leaf[i]-1][b_left_leaf[j]])
-    print_table(distance, a_tree, b_tree)
+    # print_table(distance, a_tree, b_tree)
     return distance[len(a_tree)][len(b_tree)]
 
 def find_helper_tables(some_tree, leftmost_leaves, keyroots, a_node_id):
