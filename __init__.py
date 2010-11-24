@@ -5,8 +5,7 @@ from ops_zhang_shasha import *
 
 def distance(a, b):
     tree_corrector = ComparisonZhangShasha()
-    costs = OpsZhangShasha()
-    transform = tree_corrector.find_distance(make_tree(a), make_tree(b), costs)
+    transform = tree_corrector.find_distance(make_tree(a), make_tree(b))
     return transform.get_cost()
 
 if __name__ == '__main__':

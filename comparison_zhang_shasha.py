@@ -8,7 +8,12 @@ http://www.inf.unibz.it/dis/teaching/ATA/ata7-handout-1x1.pdf
 """
 
 import transformation
-from ops_zhang_shasha import *
+from tree_edit_operations import *
+
+INSERT = 0
+DELETE = 1
+RENAME = 2
+IDENTITY = 3
 
 def multidim_arr(*dims):
     return [multidim_arr(*dims[1:]) for i in xrange(dims[0])] if dims else 0
@@ -27,7 +32,7 @@ class ComparisonZhangShasha(object):
         self.forest_distance = None
         self.distance = None
     
-    def find_distance(self, a_tree, b_tree, ops):
+    def find_distance(self, a_tree, b_tree, ops=None):
         """
         This is initialised to be n+1 * m+1.  It should really be n*m
         but because of java's zero indexing, the for loops would
@@ -35,6 +40,12 @@ class ComparisonZhangShasha(object):
         column and row.  So, distance[0,*] and distance[*,0] should
         be permanently zero.
         """
+        ops = ops or {
+            INSERT: BasicInsert(),
+            DELETE: BasicDelete(),
+            RENAME: BasicRename()
+        }
+        
         self.distance = multidim_arr(a_tree.get_node_count()+1, b_tree.get_node_count()+1)
 
         # Preliminaries
@@ -60,7 +71,7 @@ class ComparisonZhangShasha(object):
                     self.set_fd(i,
                                 b_left_leaf[b_key_root]-1,
                                 self.get_fd(i-1, b_left_leaf[b_key_root]-1, fD)+
-                                    ops.get_op(OpsZhangShasha.DELETE).get_cost(
+                                    ops[DELETE].get_cost(
                                         i, 0, a_tree, b_tree),
                                 fD)
 
@@ -69,7 +80,7 @@ class ComparisonZhangShasha(object):
                     self.set_fd(a_left_leaf[a_key_root]-1,
                                 j, 
                                 self.get_fd(a_left_leaf[a_key_root]-1, j-1, fD)+
-                                    ops.get_op(OpsZhangShasha.INSERT).get_cost(
+                                    ops[INSERT].get_cost(
                                         0, j, a_tree, b_tree), 
                                 fD)
                 
@@ -80,11 +91,11 @@ class ComparisonZhangShasha(object):
                         minimum = min(
                             # Option 1: Delete node from a_tree
                             self.get_fd(i-1, j, fD) + 
-                                ops.get_op(OpsZhangShasha.DELETE).get_cost(i, 0, a_tree, b_tree),
+                                ops[DELETE].get_cost(i, 0, a_tree, b_tree),
                              
                             # Option 2: Insert node into b_tree
                             self.get_fd(i, j-1, fD) +
-                                ops.get_op(OpsZhangShasha.INSERT).get_cost(0, j, a_tree, b_tree)
+                                ops[INSERT].get_cost(0, j, a_tree, b_tree)
                         )
                         
                         if a_left_leaf[i] == a_left_leaf[a_key_root] and \
@@ -92,7 +103,7 @@ class ComparisonZhangShasha(object):
                             self.distance[i][j] = min(
                                 minimum,
                                 self.get_fd(i-1, j-1, fD) +
-                                    ops.get_op(OpsZhangShasha.RENAME).get_cost(i, j, a_tree,b_tree)
+                                    ops[RENAME].get_cost(i, j, a_tree,b_tree)
                             )
                             self.set_fd(i, j, self.distance[i][j], fD)
                         else:
