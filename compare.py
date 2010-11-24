@@ -94,6 +94,7 @@ def find_distance_raw(a_tree, b_tree, ops=None):
                         fD[i][j] = distance[i][j]
                     else:
                         fD[i][j] = min(minimum, fD[a_left_leaf[i]-1][b_left_leaf[j]])
+    print_table(distance, a_tree, b_tree)
     return distance[len(a_tree)][len(b_tree)]
 
 def find_helper_tables(some_tree, leftmost_leaves, keyroots, a_node_id):
@@ -125,3 +126,9 @@ def find_helper_tables_recurse(some_tree, leftmost_leaves, keyroots, a_node_id):
                 seen_leftmost = True
             else:
                 keyroots.append(child)
+
+def print_table(table, left_tree, right_tree):
+    print "   %s" % '  '.join([left_tree.get_label(i) for i in xrange(1, len(table))])
+    for j in xrange(1, len(table)):
+        row = '  '.join([str(int(table[i][j])) for i in xrange(1, len(table))])
+        print "%s  %s" % (right_tree.get_label(j), row)
