@@ -171,19 +171,22 @@ class TestCompare(unittest.TestCase):
             ac = compare.distance(a,c)
             self.assertTrue(ac <= ab + bc)
 
+    #def test_randtree(self):
+        #print randtree(5, repeat=3, width=2)
+
     def test_symmetry(self):
-        trees = itertools.product((randtree(2, repeat=2, width=2) for x in xrange(2)), repeat=2)
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), repeat=2)
         for a,b in trees:
             self.assertEquals(compare.distance(a,b), compare.distance(b,a))
 
     def test_nondegenercy(self):
-        trees = itertools.product((randtree(2, repeat=2, width=2) for x in xrange(2)), repeat=2)
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), repeat=2)
         for a,b in trees:
             d = compare.distance(a,b)
             self.assertTrue((d == 0 and a is b) or a is not b)
 
     def test_triangle_inequality(self):
-        trees = itertools.product((randtree(3, repeat=2, width=2) for x in xrange(1)), (randtree(3, repeat=2, width=2) for x in xrange(1)), (randtree(3, repeat=2, width=2) for x in xrange(1)))
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), (randtree(5, repeat=3, width=2) for x in xrange(10)), (randtree(5, repeat=3, width=2) for x in xrange(10)))
         for a,b,c in trees:
 
             ab = compare.distance(a,b)
