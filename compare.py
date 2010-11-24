@@ -1,12 +1,3 @@
-"""
-This is an implementation of the Zhang and Shasha algorithm as
-described in [FIXME]
-
-SWAN 2007-11-01: I'm pretty sure this code comes from:
-http://www.cs.queensu.ca/TechReports/Reports/1995-372.pdf and
-http://www.inf.unibz.it/dis/teaching/ATA/ata7-handout-1x1.pdf
-"""
-
 import collections
 from editdist import distance as strdist
 import tree

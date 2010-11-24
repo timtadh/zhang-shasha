@@ -1,20 +1,27 @@
 Sleepytree
 ==========
 
-### Estimate tree distance using the Zhang-Shasha algorithm
+### Estimate tree edit distance using the Zhang-Shasha algorithm
 
-"Zhang Shasha" -> "ZSS" -> "Zzz." Get it? Ha!
+Steve Johnson ([steve.johnson.public@gmail.com](steve.johnson.public@gmail.com))
 
-Based on [Simple fast algorithms for the editing distance between trees and related problems.](http://www.grantjenks.com/wiki/_media/ideas:simple_fast_algorithms_for_the_editing_distance_between_tree_and_related_problems.pdf)*
+"Zhang Shasha" -> "ZSS" -> "Zzz." Get it? Sleepy? Trees? Ha!
 
-About
+Usage
 -----
 
 The author needed to calculate tree edit distance. All the good explanations of algorithms were behind paywalls and the only public implementation that could be found was in a zip archive of a Java project with a broken makefile on the server of some university in Australia.
 
-This is a [considerably] cleaned up Python translation of that Java project. [Here is the original.](http://web.science.mq.edu.au/~swan/howtos/treedistance/) Note that _the original is an incorrect implementation_ and the bugs have been fixed in this implementaiton.
+References
+----------
 
-Most of the comments are preserved from the original.
+This module began as a direct port of [this Java project from a dark alley of the internet](http://web.science.mq.edu.au/~swan/howtos/treedistance/), which is actually an **incorrect implementation.** Email [steve.johnson.public@gmail.com](steve.johnson.public@gmail.com) for more information.
 
-<sub>* Kaizhong Zhang and Dennis Shasha. Simple fast algorithms for the editing distance between trees and related problems. SIAM Journal of Computing, 18:1245–1262, 1989.
-</sub>
+### Papers
+
+The original paper describing the algorithm:  
+[Kaizhong Zhang and Dennis Shasha. Simple fast algorithms for the editing distance between trees and related problems. SIAM Journal of Computing, 18:1245–1262, 1989.]((http://www.grantjenks.com/wiki/_media/ideas:simple_fast_algorithms_for_the_editing_distance_between_tree_and_related_problems.pdf))
+
+[Slide deck overview of Zhang-Shasha](http://www.inf.unibz.it/dis/teaching/ATA/ata7-handout-1x1.pdf)
+
+[Another paper describing Zhang-Shasha](http://research.cs.queensu.ca/TechReports/Reports/1995-372.pdf)
