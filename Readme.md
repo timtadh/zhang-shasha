@@ -10,7 +10,7 @@ Steve Johnson ([steve.johnson.public@gmail.com](steve.johnson.public@gmail.com))
 Installation
 ------------
 
-Sleepytree requires at least Python 2.5 and the [`editdist`](http://pypi.python.org/pypi/editdist/0.1) module.
+Sleepytree requires at least Python 2.5. If the [`editdist`](http://pypi.python.org/pypi/editdist/0.1) module is installed, it will be used to determine replacement cost instead of a simple 1/0 equality comparison.
 
 Installation:
 

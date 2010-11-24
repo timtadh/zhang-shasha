@@ -1,6 +1,15 @@
 import collections
-from editdist import distance as strdist
+# from editdist import distance as strdist
 import tree
+
+try:
+    from editdist import distance as strdist
+except ImportError:
+    def strdist(a, b):
+        if a == b:
+            return 0
+        else:
+            return 1
 
 INSERT = 0
 DELETE = 1
