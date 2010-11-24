@@ -7,6 +7,8 @@ http://www.cs.queensu.ca/TechReports/Reports/1995-372.pdf and
 http://www.inf.unibz.it/dis/teaching/ATA/ata7-handout-1x1.pdf
 """
 
+import collections
+
 import transformation
 from tree_edit_operations import *
 
@@ -62,27 +64,21 @@ class ComparisonZhangShasha(object):
         for a_key_root in a_tree_key_roots:
             for b_key_root in b_tree_key_roots:
                 # Re-initialise forest distance tables
-                fD = {}
-            
-                self.set_fd(a_left_leaf[a_key_root], b_left_leaf[b_key_root], 0.0, fD)
+                fD = collections.defaultdict(lambda: collections.defaultdict(lambda: 0.0))
+                
+                fD[a_left_leaf[a_key_root]][b_left_leaf[b_key_root]] = 0.0
                 
                 # for all descendents of aKeyroot: i
                 for i in xrange(a_left_leaf[a_key_root], a_key_root+1):
-                    self.set_fd(i,
-                                b_left_leaf[b_key_root]-1,
-                                self.get_fd(i-1, b_left_leaf[b_key_root]-1, fD)+
-                                    ops[DELETE].get_cost(
-                                        i, 0, a_tree, b_tree),
-                                fD)
+                    new_val = fD[i-1][b_left_leaf[b_key_root]-1] + \
+                              ops[DELETE].get_cost(i, 0, a_tree, b_tree)
+                    fD[i][b_left_leaf[b_key_root]-1] = new_val
 
                 # for all descendents of bKeyroot: j
                 for j in xrange(b_left_leaf[b_key_root], b_key_root+1):
-                    self.set_fd(a_left_leaf[a_key_root]-1,
-                                j, 
-                                self.get_fd(a_left_leaf[a_key_root]-1, j-1, fD)+
-                                    ops[INSERT].get_cost(
-                                        0, j, a_tree, b_tree), 
-                                fD)
+                    new_val = fD[a_left_leaf[a_key_root]-1][j-1] + \
+                              ops[INSERT].get_cost(0, j, a_tree, b_tree)
+                    fD[a_left_leaf[a_key_root]-1][j] = new_val
                 
                 # for all descendents of aKeyroot: i
                 for i in xrange(a_left_leaf[a_key_root], a_key_root+1):
@@ -90,30 +86,20 @@ class ComparisonZhangShasha(object):
                         # This min compares del vs ins
                         minimum = min(
                             # Option 1: Delete node from a_tree
-                            self.get_fd(i-1, j, fD) + 
-                                ops[DELETE].get_cost(i, 0, a_tree, b_tree),
-                             
+                            fD[i-1][j] + ops[DELETE].get_cost(i, 0, a_tree, b_tree),
                             # Option 2: Insert node into b_tree
-                            self.get_fd(i, j-1, fD) +
-                                ops[INSERT].get_cost(0, j, a_tree, b_tree)
+                            fD[i][j-1] + ops[INSERT].get_cost(0, j, a_tree, b_tree)
                         )
                         
                         if a_left_leaf[i] == a_left_leaf[a_key_root] and \
                         b_left_leaf[j] == b_left_leaf[b_key_root]:
                             self.distance[i][j] = min(
                                 minimum,
-                                self.get_fd(i-1, j-1, fD) +
-                                    ops[RENAME].get_cost(i, j, a_tree,b_tree)
+                                fD[i-1][j-1] + ops[RENAME].get_cost(i, j, a_tree,b_tree)
                             )
-                            self.set_fd(i, j, self.distance[i][j], fD)
+                            fD[i][j] = self.distance[i][j]
                         else:
-                            self.set_fd(i, j, 
-                                        min(minimum, 
-                                            self.get_fd(a_left_leaf[i]-1, 
-                                                        b_left_leaf[j], fD)
-                                        ),
-                                        fD
-                            )
+                            fD[i][j] = min(minimum, fD[a_left_leaf[i]-1][b_left_leaf[j]])
         transform = transformation.Transformation()
         transform.set_cost(self.distance[a_tree.get_node_count()][b_tree.get_node_count()])
         return transform;
@@ -147,23 +133,4 @@ class ComparisonZhangShasha(object):
                     seen_leftmost = True
                 else:
                     keyroots.append(child)
-
-    def get_fd(self, a, b, forest_distance):
-        """This returns the value in the cell of the ForestDistance table"""
-        
-        if not forest_distance.has_key(a):
-            forest_distance[a] = {}
-        
-        rows = forest_distance[a]
-        
-        if not rows.has_key(b):
-            rows[b] = 0.0
-        
-        return rows[b]
-    
-    def set_fd(self, a, b, a_value, forest_distance):
-        if not forest_distance.has_key(a):
-            forest_distance[a] = {}
-        rows = forest_distance[a]
-        rows[b] = a_value
     
