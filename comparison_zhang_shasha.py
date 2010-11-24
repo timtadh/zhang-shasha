@@ -20,6 +20,22 @@ IDENTITY = 3
 def multidim_arr(*dims):
     return [multidim_arr(*dims[1:]) for i in xrange(dims[0])] if dims else 0
 
+def default_replace_cost_func(a_node_id, b_node_id, a_tree, b_tree):
+    a_string = a_tree.get_label_for_matching(a_node_id)
+    b_string = b_tree.get_label_for_matching(b_node_id)
+    a_div = a_string.rfind(":")
+    b_div = b_string.rfind(":")
+    
+    if a_div != -1:
+        a_string = a_string[0:a_div]
+    if b_div != -1:
+        b_string = b_string[0:b_div]
+    
+    if a_string == b_string:
+        return 0
+    else:
+        return 1
+
 class ComparisonZhangShasha(object):
     """
     "Dynamic Programming" Table.
@@ -43,9 +59,9 @@ class ComparisonZhangShasha(object):
         be permanently zero.
         """
         ops = ops or {
-            INSERT: BasicInsert(),
-            DELETE: BasicDelete(),
-            RENAME: BasicRename()
+            INSERT: lambda *args: 1,
+            DELETE: lambda *args: 1,
+            RENAME: default_replace_cost_func
         }
         
         self.distance = multidim_arr(a_tree.get_node_count()+1, b_tree.get_node_count()+1)
@@ -59,7 +75,7 @@ class ComparisonZhangShasha(object):
         
         self.find_helper_tables(a_tree, a_left_leaf, a_tree_key_roots, a_tree.get_root_id())
         self.find_helper_tables(b_tree, b_left_leaf, b_tree_key_roots, b_tree.get_root_id())
-
+        
         # Comparison
         for a_key_root in a_tree_key_roots:
             for b_key_root in b_tree_key_roots:
@@ -71,13 +87,13 @@ class ComparisonZhangShasha(object):
                 # for all descendents of aKeyroot: i
                 for i in xrange(a_left_leaf[a_key_root], a_key_root+1):
                     new_val = fD[i-1][b_left_leaf[b_key_root]-1] + \
-                              ops[DELETE].get_cost(i, 0, a_tree, b_tree)
+                              ops[DELETE](i, 0, a_tree, b_tree)
                     fD[i][b_left_leaf[b_key_root]-1] = new_val
 
                 # for all descendents of bKeyroot: j
                 for j in xrange(b_left_leaf[b_key_root], b_key_root+1):
                     new_val = fD[a_left_leaf[a_key_root]-1][j-1] + \
-                              ops[INSERT].get_cost(0, j, a_tree, b_tree)
+                              ops[INSERT](0, j, a_tree, b_tree)
                     fD[a_left_leaf[a_key_root]-1][j] = new_val
                 
                 # for all descendents of aKeyroot: i
@@ -86,16 +102,16 @@ class ComparisonZhangShasha(object):
                         # This min compares del vs ins
                         minimum = min(
                             # Option 1: Delete node from a_tree
-                            fD[i-1][j] + ops[DELETE].get_cost(i, 0, a_tree, b_tree),
+                            fD[i-1][j] + ops[DELETE](i, 0, a_tree, b_tree),
                             # Option 2: Insert node into b_tree
-                            fD[i][j-1] + ops[INSERT].get_cost(0, j, a_tree, b_tree)
+                            fD[i][j-1] + ops[INSERT](0, j, a_tree, b_tree)
                         )
                         
                         if a_left_leaf[i] == a_left_leaf[a_key_root] and \
                         b_left_leaf[j] == b_left_leaf[b_key_root]:
                             self.distance[i][j] = min(
                                 minimum,
-                                fD[i-1][j-1] + ops[RENAME].get_cost(i, j, a_tree,b_tree)
+                                fD[i-1][j-1] + ops[RENAME](i, j, a_tree,b_tree)
                             )
                             fD[i][j] = self.distance[i][j]
                         else:
