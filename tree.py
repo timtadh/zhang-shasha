@@ -116,3 +116,14 @@ class BasicTree(TreeDefinition):
         
         return ''.join(i_string(i) for i in xrange(root_id, 0, -1))
     
+
+def convert_tree(root):
+    t = convert_tree_recurse(collections.defaultdict(list), root)
+    return BasicTree(t, root, BasicTree.POSTORDER)
+
+def convert_tree_recurse(t, n):
+    for c in n.children:
+        t[n.label].append(c.label)
+        t[c.label]
+        t = convert_tree_recurse(t, c)
+    return t
