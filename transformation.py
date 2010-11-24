@@ -6,10 +6,6 @@ class Transformation(object):
     tree into another.  The two trees are stored in this data
     structure.
     """
-
-    private double totalCost;
-    private ArrayList<TreeEditOperation> operationsList 
-    = new ArrayList<TreeEditOperation>();
     
     def __init__(self):
         super(Transformation, self).__init__()

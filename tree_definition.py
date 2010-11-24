@@ -92,7 +92,7 @@ class TreeDefinition(object):
         return self.tree_structure_ids[node_id]
     
     def is_leaf(self, node_id):
-        return self.get_children_ids(node_id).size() == 0
+        return len(self.get_children_ids(node_id)) == 0
     
     def get_node_count(self):
         return len(self.tree_structure_ids)
