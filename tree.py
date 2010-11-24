@@ -123,7 +123,7 @@ class BasicTree(TreeDefinition):
 
 def convert_tree(root):
     t = convert_tree_recurse(collections.defaultdict(list), root)
-    return BasicTree(t, root, BasicTree.POSTORDER)
+    return BasicTree(t, root.label, BasicTree.POSTORDER)
 
 def convert_tree_recurse(t, n):
     for c in n.children:
