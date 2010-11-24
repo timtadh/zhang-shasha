@@ -9,9 +9,6 @@ http://www.inf.unibz.it/dis/teaching/ATA/ata7-handout-1x1.pdf
 
 import collections
 
-import transformation
-from tree_edit_operations import *
-
 INSERT = 0
 DELETE = 1
 RENAME = 2

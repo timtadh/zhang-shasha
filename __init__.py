@@ -1,7 +1,6 @@
 from create_tree_helper import make_tree
 
 from comparison_zhang_shasha import *
-from ops_zhang_shasha import *
 
 def distance(a, b):
     tree_corrector = ComparisonZhangShasha()
