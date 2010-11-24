@@ -1,5 +1,5 @@
 from create_tree_helper import make_tree
-from compare import find_distance
+from compare import find_distance_raw
 
 def distance(a, b):
     return find_distance_raw(make_tree(a), make_tree(b))

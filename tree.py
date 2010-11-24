@@ -39,7 +39,7 @@ class TreeDefinition(object):
         indexed_children = []
         for child in self.get_children(n):
             indexed_children.append(self.get_node_id(child))
-            self.index_children(n)
+            self.index_children(child)
         self.tree_structure_ids[self.get_node_id(n)] = indexed_children
     
     def set_post_ordering(self, counter, a_node_label):
