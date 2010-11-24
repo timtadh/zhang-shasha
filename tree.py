@@ -1,3 +1,5 @@
+import collections
+
 class TreeDefinition(object):
     """
     This defines necessary operations on tree required for the tree
@@ -31,12 +33,14 @@ class TreeDefinition(object):
             self.set_pre_ordering(0, self.root)
             self.order = self.PREORDER
         
-        # Create an int-indexed version of the tree
-        for parent in self.get_nodes():
-            indexed_children = []   #int
-            for child in self.get_children(parent):
-                indexed_children.append(self.get_node_id(child))
-            self.tree_structure_ids[self.get_node_id(parent)] = indexed_children
+        self.index_children(self.root)
+    
+    def index_children(self, n):
+        indexed_children = []
+        for child in self.get_children(n):
+            indexed_children.append(self.get_node_id(child))
+            self.index_children(n)
+        self.tree_structure_ids[self.get_node_id(n)] = indexed_children
     
     def set_post_ordering(self, counter, a_node_label):
         internal_counter = counter
