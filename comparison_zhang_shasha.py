@@ -102,7 +102,7 @@ class ComparisonZhangShasha(object):
                             fD[i][j] = min(minimum, fD[a_left_leaf[i]-1][b_left_leaf[j]])
         transform = transformation.Transformation()
         transform.set_cost(self.distance[a_tree.get_node_count()][b_tree.get_node_count()])
-        return transform;
+        return transform
 
     def find_helper_tables(self, some_tree, leftmost_leaves, keyroots, a_node_id):
         """
@@ -112,10 +112,10 @@ class ComparisonZhangShasha(object):
         integer values IDs must come from the post-ordering of the
         nodes in the tree.
         """
-        self.find_helper_tables_recurse(some_tree, leftmost_leaves, keyroots, a_node_id);
+        self.find_helper_tables_recurse(some_tree, leftmost_leaves, keyroots, a_node_id)
 
         # add root to keyroots
-        keyroots.append(a_node_id);
+        keyroots.append(a_node_id)
 
         # add boundary nodes
         leftmost_leaves[0] = 0

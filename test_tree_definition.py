@@ -13,7 +13,7 @@ if __name__ == '__main__':
     test_tree = {}
 
     # a-[b,c]
-    test_tree['a'] = ['b', 'c'];
+    test_tree['a'] = ['b', 'c']
     test_tree['b'] = []
 
     # c-[d, e, f]

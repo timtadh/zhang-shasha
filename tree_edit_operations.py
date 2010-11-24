@@ -43,8 +43,8 @@ class BasicRename(TreeEditOperation):
         self.op_name = "RELABEL"
     
     def get_cost(self, a_node_id, b_node_id, a_tree, b_tree):
-        a_string = a_tree.get_label_for_matching(a_node_id);
-        b_string = b_tree.get_label_for_matching(b_node_id);
+        a_string = a_tree.get_label_for_matching(a_node_id)
+        b_string = b_tree.get_label_for_matching(b_node_id)
         a_div = a_string.rfind(":")
         b_div = b_string.rfind(":")
         
