@@ -60,23 +60,23 @@ def find_distance_raw(a_tree, b_tree, ops=None):
             # Re-initialise forest distance tables
             fD = collections.defaultdict(lambda: collections.defaultdict(lambda: 0.0))
             
-            fD[a_left_leaf[a_key_root]][b_left_leaf[b_key_root]] = 0.0
+            a_null = a_left_leaf[a_key_root]
+            b_null = b_left_leaf[b_key_root]
+            fD[a_null][b_null] = 0.0
             
             # for all descendents of aKeyroot: i
-            for i in xrange(a_left_leaf[a_key_root], a_key_root+1):
-                new_val = fD[i-1][b_left_leaf[b_key_root]] + \
-                          ops[DELETE](i, 0, a_tree, b_tree)
-                fD[i][b_left_leaf[b_key_root]] = new_val
+            for i in xrange(a_null, a_key_root+1):
+                label_cost = ops[DELETE](i, 0, a_tree, b_tree)
+                fD[i][b_null] = fD[i-1][b_null] + label_cost
 
             # for all descendents of bKeyroot: j
-            for j in xrange(b_left_leaf[b_key_root], b_key_root+1):
-                new_val = fD[a_left_leaf[a_key_root]][j-1] + \
-                          ops[INSERT](0, j, a_tree, b_tree)
-                fD[a_left_leaf[a_key_root]][j] = new_val
+            for j in xrange(b_null, b_key_root+1):
+                label_cost = ops[INSERT](0, j, a_tree, b_tree)
+                fD[a_null][j] = fD[a_null][j-1] + label_cost
             
             # for all descendents of aKeyroot: i
-            for i in xrange(a_left_leaf[a_key_root], a_key_root+1):
-                for j in xrange(b_left_leaf[b_key_root], b_key_root+1):
+            for i in xrange(a_null, a_key_root+1):
+                for j in xrange(b_null, b_key_root+1):
                     # This min compares del vs ins
                     minimum = min(
                         # Option 1: Delete node from a_tree
@@ -85,8 +85,7 @@ def find_distance_raw(a_tree, b_tree, ops=None):
                         fD[i][j-1] + ops[INSERT](0, j, a_tree, b_tree)
                     )
                     
-                    if a_left_leaf[i] == a_left_leaf[a_key_root] and \
-                    b_left_leaf[j] == b_left_leaf[b_key_root]:
+                    if a_left_leaf[i] == a_null and b_left_leaf[j] == b_null:
                         distance[i][j] = min(
                             minimum,
                             fD[i-1][j-1] + ops[RENAME](i, j, a_tree,b_tree)
