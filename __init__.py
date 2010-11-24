@@ -5,8 +5,7 @@ from ops_zhang_shasha import *
 
 def distance(a, b):
     tree_corrector = ComparisonZhangShasha()
-    transform = tree_corrector.find_distance(make_tree(a), make_tree(b))
-    return transform.get_cost()
+    return tree_corrector.find_distance(make_tree(a), make_tree(b))
 
 if __name__ == '__main__':
     assert distance('a-b;a-c', 'a-b;a-d') == 1

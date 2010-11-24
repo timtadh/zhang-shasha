@@ -116,9 +116,7 @@ class ComparisonZhangShasha(object):
                             fD[i][j] = self.distance[i][j]
                         else:
                             fD[i][j] = min(minimum, fD[a_left_leaf[i]-1][b_left_leaf[j]])
-        transform = transformation.Transformation()
-        transform.set_cost(self.distance[a_tree.get_node_count()][b_tree.get_node_count()])
-        return transform
+        return self.distance[a_tree.get_node_count()][b_tree.get_node_count()]
 
     def find_helper_tables(self, some_tree, leftmost_leaves, keyroots, a_node_id):
         """
