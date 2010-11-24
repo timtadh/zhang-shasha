@@ -1,4 +1,4 @@
-import basic_tree
+import tree
 """
 This takes a String describing a tree and converts it into a
 TreeDefinition.  The format of the string is a series of edges
@@ -28,7 +28,7 @@ def make_tree(tree_spec, root_id=None):
         add_edge(nodes[0], nodes[1], a_tree)
         root = root or nodes[0]
     
-    return basic_tree.BasicTree(a_tree, root, basic_tree.BasicTree.POSTORDER)
+    return tree.BasicTree(a_tree, root, tree.BasicTree.POSTORDER)
 
 def add_edge(parent_label, child_label, tree_structure):
     """This adds the edge (and nodes if necessary) to the tree

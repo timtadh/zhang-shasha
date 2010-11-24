@@ -1,4 +1,4 @@
-import basic_tree, create_tree_helper
+import tree, create_tree_helper
 
 def dictprint(items):
     print
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     test_tree['e'] = []
     test_tree['f'] = []
     
-    a_basic_tree = basic_tree.BasicTree(test_tree, 'a', basic_tree.BasicTree.POSTORDER)
+    a_basic_tree = tree.BasicTree(test_tree, 'a', tree.BasicTree.POSTORDER)
     
     print "Static test tree:"
     print "Number of nodes: %d" % a_basic_tree.get_node_count()
