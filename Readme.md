@@ -7,6 +7,15 @@ Steve Johnson ([steve.johnson.public@gmail.com](steve.johnson.public@gmail.com))
 
 "Zhang Shasha" -> "ZSS" -> "Zzz." Get it? Sleepy? Trees? Ha!
 
+Installation
+------------
+
+Sleepytree requires Python 2.5 and the [`editdist`](http://pypi.python.org/pypi/editdist/0.1) module.
+
+Installation:
+
+    python setup.py install
+
 Tree Format and Usage
 ---------------------
 
