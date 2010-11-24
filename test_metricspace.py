@@ -9,6 +9,8 @@ import unittest, os, sys, base64, itertools, random, time
 import copy, collections
 from random import randint, seed, shuffle
 
+import compare
+
 seed(os.urandom(15))
 
 class Node(object):
@@ -154,87 +156,39 @@ class TestTestNode(unittest.TestCase):
         root = tree1()
         self.assertEqual(list(x.label for x in root.iter()), ['f','d','e','a','c','b'])
 
-class TestKlein(unittest.TestCase):
-
-    def test_flatten(self):
-        self.assertEquals(klein.flatten([1,2,[3,[4,5],6,[7,[8,9,[0,[1,[2,[3]]]]]]]]), [1,2,3,4,5,6,7,8,9,0,1,2,3])
-
-    def test_opinjection(self):
-        Node.__sub__ = lambda self, b: Node("xyz")
-        n1 = Node("1")
-        n2 = Node("2")
-        self.assertTrue(n1 - n2)
-
-    def test_removenode1(self):
-        def __sub__(self, b):
-            a = copy.deepcopy(self)
-            return klein.remove_node(a, b)
-        for c in tree1_nodes:
-            root = tree1()
-            root.__class__.remove_node = klein.remove_node
-            root.__class__.__sub__ = __sub__
-            toremove = root.get(c)
-            roots = root.remove_node(toremove)
-            for n in tree1_nodes:
-                if n == c: self.assertFalse(sum(n in r for r in roots))
-                else: self.assertTrue(sum(n in r for r in roots))
-
-        for c in tree1_nodes:
-            root = tree1()
-            toremove = root.get(c)
-            new_roots = root - toremove
-            for n in tree1_nodes:
-                if n == c: self.assertFalse(sum(n in r for r in new_roots))
-                else: self.assertTrue(sum(n in r for r in new_roots))
-                self.assertTrue(n in root)
-
-    def test_removetree1(self):
-        tree1_nodes.sort()
-        for c in tree1_nodes:
-            root = tree1()
-            root.__class__.remove_tree = klein.remove_tree
-            toremove = root.get(c)
-            non_existant = [c.label for c in toremove.iter()]
-            non_existant.sort()
-            roots = root.remove_tree(toremove)
-            for n in tree1_nodes:
-                if roots == None: self.assertEquals(tree1_nodes, non_existant)
-                elif n in non_existant: self.assertFalse(sum(n in r for r in roots))
-                else: self.assertTrue(sum(n in r for r in roots))
-
-
+class TestCompare(unittest.TestCase):
     def test_distance(self):
         trees = itertools.product([tree1(), tree2(), tree3(), tree4()], repeat=2)
         for a,b in trees:
-            ab = klein.distance(a,b)
-            ba = klein.distance(b,a)
+            ab = compare.distance(a,b)
+            ba = compare.distance(b,a)
             self.assertEquals(ab,ba)
             self.assertTrue((ab == 0 and a is b) or a is not b)
         trees = itertools.product([tree1(), tree2(), tree3(), tree4()], repeat=3)
         for a,b,c in trees:
-            ab = klein.distance(a,b)
-            bc = klein.distance(b,c)
-            ac = klein.distance(a,c)
+            ab = compare.distance(a,b)
+            bc = compare.distance(b,c)
+            ac = compare.distance(a,c)
             self.assertTrue(ac <= ab + bc)
 
     def test_symmetry(self):
         trees = itertools.product((randtree(2, repeat=2, width=2) for x in xrange(2)), repeat=2)
         for a,b in trees:
-            self.assertEquals(klein.distance(a,b), klein.distance(b,a))
+            self.assertEquals(compare.distance(a,b), compare.distance(b,a))
 
     def test_nondegenercy(self):
         trees = itertools.product((randtree(2, repeat=2, width=2) for x in xrange(2)), repeat=2)
         for a,b in trees:
-            d = klein.distance(a,b)
+            d = compare.distance(a,b)
             self.assertTrue((d == 0 and a is b) or a is not b)
 
     def test_triangle_inequality(self):
         trees = itertools.product((randtree(3, repeat=2, width=2) for x in xrange(1)), (randtree(3, repeat=2, width=2) for x in xrange(1)), (randtree(3, repeat=2, width=2) for x in xrange(1)))
         for a,b,c in trees:
 
-            ab = klein.distance(a,b)
-            bc = klein.distance(b,c)
-            ac = klein.distance(a,c)
+            ab = compare.distance(a,b)
+            bc = compare.distance(b,c)
+            ac = compare.distance(a,c)
             self.assertTrue(ac <= ab + bc)
 
 if __name__ == '__main__':

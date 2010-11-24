@@ -2,7 +2,7 @@ from create_tree_helper import make_tree
 from compare import find_distance
 
 def distance(a, b):
-    return find_distance(make_tree(a), make_tree(b))
+    return find_distance_raw(make_tree(a), make_tree(b))
 
 if __name__ == '__main__':
     assert distance('a-b;a-c', 'a-b;a-d') == 1

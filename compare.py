@@ -8,11 +8,15 @@ http://www.inf.unibz.it/dis/teaching/ATA/ata7-handout-1x1.pdf
 """
 
 import collections
+import tree
 
 INSERT = 0
 DELETE = 1
 RENAME = 2
 IDENTITY = 3
+
+def distance(a, b):
+    return find_distance_raw(tree.convert_tree(a), tree.convert_tree(b))
 
 def multidim_arr(*dims):
     return [multidim_arr(*dims[1:]) for i in xrange(dims[0])] if dims else 0
@@ -33,7 +37,7 @@ def default_replace_cost_func(a_node_id, b_node_id, a_tree, b_tree):
     else:
         return 1
 
-def find_distance(a_tree, b_tree, ops=None):
+def find_distance_raw(a_tree, b_tree, ops=None):
     """
     This is initialised to be n+1 * m+1.  It should really be n*m
     but because of java's zero indexing, the for loops would
