@@ -77,22 +77,25 @@ def find_distance_raw(a_tree, b_tree, ops=None):
             # for all descendents of aKeyroot: i
             for i in xrange(a_null, a_key_root+1):
                 for j in xrange(b_null, b_key_root+1):
-                    # This min compares del vs ins
-                    minimum = min(
-                        # Option 1: Delete node from a_tree
-                        fD[i-1][j] + ops[DELETE](i, 0, a_tree, b_tree),
-                        # Option 2: Insert node into b_tree
-                        fD[i][j-1] + ops[INSERT](0, j, a_tree, b_tree)
-                    )
-                    
                     if a_left_leaf[i] == a_null and b_left_leaf[j] == b_null:
-                        distance[i][j] = min(
-                            minimum,
+                        fD[i][j] = min(
+                            # Option 1: Delete node from a_tree
+                            fD[i-1][j] + ops[DELETE](i, 0, a_tree, b_tree),
+                            # Option 2: Insert node into b_tree
+                            fD[i][j-1] + ops[INSERT](0, j, a_tree, b_tree),
+                            # Option 3: Rename
                             fD[i-1][j-1] + ops[RENAME](i, j, a_tree,b_tree)
                         )
-                        fD[i][j] = distance[i][j]
+                        distance[i][j] = fD[i][j]
                     else:
-                        fD[i][j] = min(minimum, fD[a_left_leaf[i]-1][b_left_leaf[j]])
+                        fD[i][j] = min(
+                            # Option 1: Delete node from a_tree
+                            fD[i-1][j] + ops[DELETE](i, 0, a_tree, b_tree),
+                            # Option 2: Insert node into b_tree
+                            fD[i][j-1] + ops[INSERT](0, j, a_tree, b_tree),
+                            # Option 3: Rename
+                            fD[a_left_leaf[i]-1][b_left_leaf[j]-1] + distance[i][j]
+                        )
     # print_table(distance, a_tree, b_tree)
     return distance[len(a_tree)][len(b_tree)]
 
