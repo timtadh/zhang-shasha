@@ -8,6 +8,7 @@ http://www.inf.unibz.it/dis/teaching/ATA/ata7-handout-1x1.pdf
 """
 
 import collections
+from editdist import distance as strdist
 import tree
 
 INSERT = 0
@@ -24,18 +25,8 @@ def multidim_arr(*dims):
 def default_replace_cost_func(a_node_id, b_node_id, a_tree, b_tree):
     a_string = a_tree.get_label_for_matching(a_node_id)
     b_string = b_tree.get_label_for_matching(b_node_id)
-    a_div = a_string.rfind(":")
-    b_div = b_string.rfind(":")
     
-    if a_div != -1:
-        a_string = a_string[0:a_div]
-    if b_div != -1:
-        b_string = b_string[0:b_div]
-    
-    if a_string == b_string:
-        return 0
-    else:
-        return 1
+    return strdist(a_string, b_string)
 
 def find_distance_raw(a_tree, b_tree, ops=None):
     """
