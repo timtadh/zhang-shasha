@@ -24,22 +24,18 @@ def multidim_arr(val, *dims):
     """Initialize a multidimensional array"""
     return [multidim_arr(val, *dims[1:]) for i in xrange(dims[0])] if dims else val
 
-def default_replace_cost_func(a_node_id, b_node_id, a_tree, b_tree):
-    """Find cost to replace a_string with b_string"""
-    a_string = a_tree.get_label_for_matching(a_node_id)
-    b_string = b_tree.get_label_for_matching(b_node_id)
-    
-    return strdist(a_string, b_string)
-
 def find_distance_raw(a_tree, b_tree, ops=None):
     """Find the edit distance between two trees in the tree.py format. Specify `ops` if
     the cost functions need to be more sophisticated."""
+    
+    l4m_a = a_tree.get_label_for_matching
+    l4m_b = b_tree.get_label_for_matching
     
     # Default cost functions
     ops = ops or {
         INSERT: lambda *args: 1,
         DELETE: lambda *args: 1,
-        RENAME: default_replace_cost_func
+        RENAME: lambda node_a, node_b, *args: strdist(l4m_a(node_a), l4m_b(node_b))
     }
     
     # For the most faithful reproduction of the algorithm given in the paper,
