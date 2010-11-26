@@ -10,7 +10,6 @@ class Tree(object):
     
     def __init__(self, root):
         self.root = root
-        self.ids_to_label = {}
         self.id_tree = {}
         self.node_for_id = {}
         self.id_for_node = {}
