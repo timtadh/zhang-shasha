@@ -195,5 +195,9 @@ class TestCompare(unittest.TestCase):
             self.assertTrue(ac <= ab + bc)
 
 if __name__ == '__main__':
-    unittest.main()
+    if len(sys.argv) > 1:
+        import cProfile
+        cProfile.run('unittest.main()', 'profile')
+    else:
+        unittest.main()
 
