@@ -19,10 +19,6 @@ Installation:
 Tree Format and Usage
 ---------------------
 
-Two tree formats are accepted: object and dict.
-
-### Object Format
-
 The tree is represented by objects referencing each other. Each node is represented by an object with at least the attributes `label` and `children`, where `label` is a string and `children` is a list of other objects.
 
 To find the distance between two object trees, call `compare.distance(root1, root2)`.
@@ -38,26 +34,6 @@ The object format is used by the tests and is probably the easiest to work with.
     assert compare.distance(a, a) == 0
 
 See `test_metricspace.py` for more examples.
-
-### Dict Format
-
-The tree is represented by a dictionary of edges in which the keys are the labels of the tails and the values are lists of heads. This dictionary is passed to a new `tree.BasicTree` object along with the label of the root.
-
-To find the distance between two dict trees, call `compare.find_distance_raw(tree1, tree2)`.
-
-The same simple example:
-
-    # a---> b
-    #  \--> c
-    d = {
-        'a': ['b', 'c'],
-        'b': [],
-        'c': []
-    }
-    t = tree.BasicTree(d, 'a')
-    assert compare.find_distance_raw(t, t) == 0
-
-This representation is primarily used internally, but will be more efficient to use if the data must be converted some other format anyway.
 
 References
 ----------

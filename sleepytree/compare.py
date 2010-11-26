@@ -18,7 +18,7 @@ IDENTITY = 3
 
 def distance(a, b):
     """Find the edit distance between two trees specified using the test_metricspace.py format"""
-    return find_distance_raw(tree.convert_tree(a), tree.convert_tree(b))
+    return find_distance_raw(tree.Tree(a), tree.Tree(b))
 
 def multidim_arr(val, *dims):
     """Initialize a multidimensional array"""
@@ -48,8 +48,8 @@ def find_distance_raw(a_tree, b_tree, ops=None):
     a_tree_key_roots = []
     b_tree_key_roots = []
     
-    find_helper_tables(a_tree, a_left_leaf, a_tree_key_roots, a_tree.get_root_id())
-    find_helper_tables(b_tree, b_left_leaf, b_tree_key_roots, b_tree.get_root_id())
+    find_helper_tables(a_tree, a_left_leaf, a_tree_key_roots, a_tree.root_id)
+    find_helper_tables(b_tree, b_left_leaf, b_tree_key_roots, b_tree.root_id)
     
     # Comparison
     for a_key_root in a_tree_key_roots:
@@ -114,7 +114,7 @@ def find_helper_tables_recurse(some_tree, leftmost_leaves, keyroots, a_node_id):
         leftmost_leaves[a_node_id] = a_node_id
     else:
         seen_leftmost = False
-        for child in some_tree.get_children_ids(a_node_id):
+        for child in some_tree.id_tree[a_node_id]:
             find_helper_tables_recurse(some_tree, leftmost_leaves, keyroots, child)
             if not seen_leftmost:
                 leftmost_leaves[a_node_id] = leftmost_leaves[child]
