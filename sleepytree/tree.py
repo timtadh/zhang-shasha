@@ -93,8 +93,6 @@ class BasicTree(TreeDefinition):
     """
     
     def __init__(self, ts=None, root=None, o=None):
-        """This takes a |e| x 2 array of string, where |e| is the number
-        of edges."""
         super(BasicTree, self).__init__()
         self.root = root
         self.tree_structure = ts or {}
