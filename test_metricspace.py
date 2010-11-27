@@ -14,6 +14,7 @@ from sleepytree.test_tree import Node
 
 seed(os.urandom(15))
 
+N = 10
 
 def product(*args, **kwds):
     # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
@@ -149,7 +150,7 @@ class TestCompare(unittest.TestCase):
         #print randtree(5, repeat=3, width=2)
 
     def test_symmetry(self):
-        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), repeat=2)
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), repeat=2)
         for a,b in trees:
             ab = compare.distance(a,b)
             ba = compare.distance(b,a)
@@ -158,7 +159,7 @@ class TestCompare(unittest.TestCase):
             self.assertEquals(ab, ba)
 
     def test_nondegenercy(self):
-        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), repeat=2)
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), repeat=2)
         for a,b in trees:
             d = compare.distance(a,b)
             #print '-----------------------------'
@@ -166,7 +167,7 @@ class TestCompare(unittest.TestCase):
             self.assertTrue((d == 0 and a is b) or a is not b)
 
     def test_triangle_inequality(self):
-        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), (randtree(5, repeat=3, width=2) for x in xrange(10)), (randtree(5, repeat=3, width=2) for x in xrange(10)))
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), (randtree(5, repeat=3, width=2) for x in xrange(N)), (randtree(5, repeat=3, width=2) for x in xrange(N)))
         for a,b,c in trees:
             #print '--------------------------------'
             ab = compare.distance(a,b)
