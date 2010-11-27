@@ -9,10 +9,9 @@ import tree
 from test_tree import Node
 
 try:
-    from editdisst import distance as strdist
+    from editdist import distance as strdist
 except ImportError:
     def strdist(a, b):
-        return 1
         if a == b:
             return 0
         else:
@@ -64,7 +63,7 @@ def distance(A, B):
     def forestdist(a, b):
         key = (a, b)
         if key in forestdists:
-            print 'memoized', key
+            #print 'memoized', key
             return forestdists[key]
         #print forestdists
 
@@ -75,20 +74,20 @@ def distance(A, B):
 
 
         if a[0] >= a[1] and b[0] >= b[1]: # δ(θ, θ) = 0
-            print 'null', a, b
+            #print 'null', a, b
             fd = 0
         elif b[0] >= b[1]: # δ(l(i1)..i, θ) = δ(l(1i)..1-1, θ) + γ(v → λ)
-            print 'insert', a, b
+            #print 'insert', a, b
             return (
                 forestdist((Al[a[0]],a[1]-1), b) + strdist(An[a[0]].label, '')
             )
         elif a[0] >= a[1]: # δ(θ, l(j1)..j) = δ(θ, l(j1)..j-1) + γ(λ → w)
-            print 'delete', a, b
+            #print 'delete', a, b
             fd = (
                 forestdist(a, (Bl[b[0]],b[1]-1)) + strdist('', Bn[b[0]].label)
             )
         else:
-            print 'complex', a,b
+            #print 'complex', a,b
             #import pdb
             #pdb.set_trace()
             if A.lmds[a[0]] == A.lmds[a[1]] and B.lmds[b[0]] == B.lmds[b[1]]:
@@ -143,23 +142,39 @@ def distance(A, B):
         ## i do not have to explicitly store my results or precompute them
         ## as they will be computed as necessary
 
+        #forestdist((0,0),(0,0))
+        #for x in xrange(A.lmds[i], i+1): ## the plus one is for the xrange impl
+            #forestdist((A.lmds[i], x), (0,0))
+
+        #for y in xrange(B.lmds[j], j+1):
+            #forestdist((0,0),(B.lmds[j], y))
+
         for x in xrange(A.lmds[i], i+1): ## the plus one is for the xrange impl
             for y in xrange(B.lmds[j], j+1):
-                print (A.lmds[i], x), (B.lmds[j], y), 'td'
                 #if A.lmds[i] == A.lmds[x] and B.lmds[j] == B.lmds[y]:
-                s(x, y, forestdist((A.lmds[i], x), (B.lmds[j], y)))
+                v = forestdist((A.lmds[i], x), (B.lmds[j], y))
+                s(x, y, v)
+                    #print (A.lmds[i], x), (B.lmds[j], y), 'td', v
+                #else:
+                    #print (A.lmds[i], x), (B.lmds[j], y), 'td'
+
 
         return treedists[i][j]
 
-    for i, j in ((i, j) for i in A.keyroots for j in B.keyroots):
+    #for i, j in ((i, j) for i in A.keyroots for j in B.keyroots):
         #print i, j, treedist(i, j)
-        x = treedist(i,j)
-        print '----->', (i+1,j+1), x
-        forestdists = dict()
-    for i in sorted(treedists.keys()):
-        for j in sorted(treedists.keys()):
-            print treedists[i][j],
-        print
+        #x = treedist(i,j)
+        #print '----->', (i,j), x
+        #forestdists = dict()
+    i = len(A.nodes)-1
+    j = len(B.nodes)-1
+    x = treedist(i,j)
+    #print '----->', (i,j), x
+    #for i in sorted(treedists.keys()):
+        #for j in sorted(treedists.keys()):
+            #print treedists[i][j],
+        #print
+    return x
 
 
 
@@ -181,4 +196,4 @@ if __name__ == '__main__':
                     .addkid(Node("b"))))
             .addkid(Node("e"))
         )
-    print distance(A, B)
+    #print distance(A, B)
