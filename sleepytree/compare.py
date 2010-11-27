@@ -9,7 +9,7 @@ import tree
 from test_tree import Node
 
 try:
-    from editdist import distance as strdist
+    from editdidst import distance as strdist
 except ImportError:
     def strdist(a, b):
         if a == b:
@@ -70,121 +70,89 @@ class AnotatedTree(object):
             keyroots[lmd] = i
             i += 1
         self.keyroots = sorted(keyroots.values())
-        print self.lmds
-        print self.keyroots
-
-
-    @staticmethod
-    def idnodes(root):
-        def setid(n, _id):
-            setattr(n, "_id", _id)
-            return n
-        nodes = [setid(n, i) for i, n in enumerate(post_traverse(root))]
-        return nodes
-
-    @staticmethod
-    def left_most_descendent(n):
-        return post_traverse(n).next()._id
+        #print self.lmds
+        #print self.keyroots
 
 def distance(A, B):
     A, B = AnotatedTree(A), AnotatedTree(B)
     treedists = dict()
-    forestdists = dict()
-    def forestdist(a, b):
-        key = (a, b)
-        if key in forestdists:
-            #print 'memoized', key
-            return forestdists[key]
-        #print forestdists
 
-        Al = A.lmds
-        Bl = B.lmds
-        An = A.nodes
-        Bn = B.nodes
-
-        if a[0] >= a[1] and b[0] >= b[1]: # δ(θ, θ) = 0
-            #print 'null', a, b
-            fd = 0
-        elif b[0] >= b[1]: # δ(l(i1)..i, θ) = δ(l(1i)..1-1, θ) + γ(v → λ)
-            #print 'insert', a, b
-            fd = (
-                forestdist((Al[a[0]],a[1]-1), b) + strdist(An[a[0]].label, '')
-            )
-        elif a[0] >= a[1]: # δ(θ, l(j1)..j) = δ(θ, l(j1)..j-1) + γ(λ → w)
-            #print 'delete', a, b
-            fd = (
-                forestdist(a, (Bl[b[0]],b[1]-1)) + strdist('', Bn[b[0]].label)
-            )
-        else:
-            #print 'complex', a,b
-            #import pdb
-            #pdb.set_trace()
-            if A.lmds[a[0]] == A.lmds[a[1]] and B.lmds[b[0]] == B.lmds[b[1]]:
-                #                   +-
-                #                   | δ(l(i1)..i-1, l(j1)..j) + γ(v → λ)
-                # δ(F1 , F2 ) = min-+ δ(l(i1)..i , l(j1)..j-1) + γ(λ → w)
-                #                   | δ(l(i1)..i-1, l(j1)..j-1) + γ(v → w)
-                #                   +-
-                fd = min(
-                    (
-                        forestdist((Al[a[0]],a[1]-1), b)
-                        + strdist(An[a[0]].label, '')
-                    ),
-                    (
-                        forestdist(a, (Bl[b[0]],b[1]-1))
-                        + strdist('', Bn[b[0]].label)
-                    ),
-                    (
-                        forestdist((Al[a[0]],a[1]-1), (Bl[b[0]],b[1]-1))
-                        +strdist(An[a[0]].label, Bn[b[0]].label)
-                    )
-                )
-            else:
-                #                   +-
-                #                   | δ(l(i1)..i-1, l(j1)..j) + γ(v → λ)
-                # δ(F1 , F2 ) = min-+ δ(l(i1)..i , l(j1)..j-1) + γ(λ → w)
-                #                   | δ(l(i1)..l(i)-1, l(j1)..l(j)-1) + treedist(i,j)
-                #                   +-
-                fd = min(
-                    (
-                        forestdist((Al[a[0]],a[1]-1), b)
-                        + strdist(An[a[0]].label, '')
-                    ),
-                    (
-                        forestdist(a, (Bl[b[0]],b[1]-1))
-                        + strdist('', Bn[b[0]].label)
-                    ),
-                    (
-                        forestdist((Al[a[0]],Al[a[1]]-1), (Bl[b[0]],Bl[b[1]]-1))
-                        + treedist(a[1], b[1])
-                    )
-                )
-        forestdists[key] = fd
-        return fd
     def treedist(i, j):
         if i in treedists and j in treedists[i]: return treedists[i][j]
         def s(i, j, v):
             if i not in treedists: treedists[i] = dict()
             treedists[i][j] = v
 
-        ## Note because my algorithm is memoized rather than dynamic in structure
-        ## i do not have to explicitly store my results or precompute them
-        ## as they will be computed as necessary
+        fd = forestdists = dict()
+        def gfd(a, b): # get an item from the forest dists array
+            if a[0] >= a[1] and b[0] >= b[1]: # δ(θ, θ) = 0
+                return 0
+            if b[0] >= b[1]:
+                return forestdists[(a,(0,0))]
+            if a[0] >= a[1]:
+                return forestdists[((0,0),b)]
+            return forestdists[(a,b)]
 
-        for x in xrange(A.lmds[i], i+1):
-            forestdist((A.lmds[i], x), (0, 0))
-        for y in xrange(B.lmds[j], i+1):
-            forestdist((0, 0), (B.lmds[j], y))
+        Al = A.lmds
+        Bl = B.lmds
+        An = A.nodes
+        Bn = B.nodes
 
-        #print (A.lmds[i], i), (B.lmds[j], j), tuple(xrange(A.lmds[i], i+1)), tuple(xrange(B.lmds[j], j+1))
-        for x in xrange(A.lmds[i], i+1): ## the plus one is for the xrange impl
-            for y in xrange(B.lmds[j], j+1):
+        for x in xrange(Al[i], i+1): # δ(l(i1)..i, θ) = δ(l(1i)..1-1, θ) + γ(v → λ)
+            fd[(Al[i], x), (0, 0)] = (
+                gfd((Al[i],x-1), (0, 0)) + strdist(An[x].label, '')
+            )
+        for y in xrange(Bl[j], j+1): # δ(θ, l(j1)..j) = δ(θ, l(j1)..j-1) + γ(λ → w)
+            fd[(0, 0), (Bl[j], y)] = (
+                gfd((0,0), (Bl[j],y-1)) + strdist('', Bn[y].label)
+            )
+
+        for x in xrange(Al[i], i+1): ## the plus one is for the xrange impl
+            for y in xrange(Bl[j], j+1):
                 # only need to check if x is an ancestor of i
                 # and y is an ancestor of j
                 if (A.lmds[i] == A.lmds[x] and B.lmds[j] == B.lmds[y] or
                   (x == i and y == j)):
-                    v = forestdist((A.lmds[i], x), (B.lmds[j], y))
-                    s(x, y, v)
+                    #                   +-
+                    #                   | δ(l(i1)..i-1, l(j1)..j) + γ(v → λ)
+                    # δ(F1 , F2 ) = min-+ δ(l(i1)..i , l(j1)..j-1) + γ(λ → w)
+                    #                   | δ(l(i1)..i-1, l(j1)..j-1) + γ(v → w)
+                    #                   +-
+                    fd[((Al[i], x), (Bl[j], y))] = min(
+                        (
+                            gfd((Al[i],x-1), (Bl[j], y))
+                            + strdist(An[x].label, '')
+                        ),
+                        (
+                            gfd((Al[i], x), (Bl[j],y-1))
+                            + strdist('', Bn[y].label)
+                        ),
+                        (
+                            gfd((Al[i],x-1), (Bl[j],y-1))
+                            +strdist(An[x].label, Bn[y].label)
+                        )
+                    )
+                    s(x, y, fd[((Al[i], x), (Bl[j], y))])
+                else:
+                    #                   +-
+                    #                   | δ(l(i1)..i-1, l(j1)..j) + γ(v → λ)
+                    # δ(F1 , F2 ) = min-+ δ(l(i1)..i , l(j1)..j-1) + γ(λ → w)
+                    #                   | δ(l(i1)..l(i)-1, l(j1)..l(j)-1) + treedist(i,j)
+                    #                   +-
+                    fd[((Al[i], x), (Bl[j], y))] = min(
+                        (
+                            gfd((Al[i],x-1), (Bl[j], y))
+                            + strdist(An[x].label, '')
+                        ),
+                        (
+                            gfd((Al[i], x), (Bl[j],y-1))
+                            + strdist('', Bn[y].label)
+                        ),
+                        (
+                            gfd((Al[i],Al[x]-1), (Bl[j],Bl[y]-1))
+                            + treedist(x, y)
+                        )
+                    )
         if i in treedists and j in treedists[i]:
             return treedists[i][j]
         else:
@@ -194,9 +162,9 @@ def distance(A, B):
             print treedists
             sys.exit(1)
 
-    i = len(A.nodes)-1
-    j = len(B.nodes)-1
-    x = treedist(i,j)
+    for i in A.keyroots:
+        for j in B.keyroots:
+            x = treedist(i,j)
     return x
 
 
@@ -219,4 +187,7 @@ if __name__ == '__main__':
                     .addkid(Node("b"))))
             .addkid(Node("e"))
         )
-    print distance(A, B)
+    d = distance(A, B)
+    print
+    print
+    print 'distance', d
