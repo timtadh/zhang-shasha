@@ -128,12 +128,12 @@ class TestCompare(unittest.TestCase):
         for a,b in trees:
             ab = compare.distance(a,b)
             ba = compare.distance(b,a)
-            print '-----------------------------'
-            print a
-            print '------'
-            print b
-            print '------'
-            print ab, ba
+            #print '-----------------------------'
+            #print a
+            #print '------'
+            #print b
+            #print '------'
+            #print ab, ba
             self.assertEquals(ab,ba)
             self.assertTrue((ab == 0 and a is b) or a is not b)
             #break
@@ -149,30 +149,30 @@ class TestCompare(unittest.TestCase):
         #print randtree(5, repeat=3, width=2)
 
     def test_symmetry(self):
-        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(3)), repeat=2)
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), repeat=2)
         for a,b in trees:
             ab = compare.distance(a,b)
             ba = compare.distance(b,a)
-            print '-----------------------------'
-            print ab, ba
+            #print '-----------------------------'
+            #print ab, ba
             self.assertEquals(ab, ba)
 
     def test_nondegenercy(self):
         trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), repeat=2)
         for a,b in trees:
             d = compare.distance(a,b)
-            print '-----------------------------'
-            print d, a is b
+            #print '-----------------------------'
+            #print d, a is b
             self.assertTrue((d == 0 and a is b) or a is not b)
 
     def test_triangle_inequality(self):
-        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(3)), (randtree(5, repeat=3, width=2) for x in xrange(3)), (randtree(5, repeat=3, width=2) for x in xrange(3)))
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), (randtree(5, repeat=3, width=2) for x in xrange(10)), (randtree(5, repeat=3, width=2) for x in xrange(10)))
         for a,b,c in trees:
-            print '--------------------------------'
+            #print '--------------------------------'
             ab = compare.distance(a,b)
             bc = compare.distance(b,c)
             ac = compare.distance(a,c)
-            print ab, bc, ac
+            #print ab, bc, ac
             self.assertTrue(ac <= ab + bc)
 
 if __name__ == '__main__':

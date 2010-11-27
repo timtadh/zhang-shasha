@@ -151,12 +151,11 @@ def distance(A, B):
 
         for x in xrange(A.lmds[i], i+1): ## the plus one is for the xrange impl
             for y in xrange(B.lmds[j], j+1):
-                #if A.lmds[i] == A.lmds[x] and B.lmds[j] == B.lmds[y]:
-                v = forestdist((A.lmds[i], x), (B.lmds[j], y))
-                s(x, y, v)
-                    #print (A.lmds[i], x), (B.lmds[j], y), 'td', v
-                #else:
-                    #print (A.lmds[i], x), (B.lmds[j], y), 'td'
+                # only need to check if x is an ancestor of i
+                # and y is an ancestor of j
+                if A.lmds[i] == A.lmds[x] and B.lmds[j] == B.lmds[y]:
+                    v = forestdist((A.lmds[i], x), (B.lmds[j], y))
+                    s(x, y, v)
 
 
         return treedists[i][j]
