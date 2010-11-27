@@ -110,13 +110,12 @@ def distance(A, B):
         An = A.nodes
         Bn = B.nodes
 
-
         if a[0] >= a[1] and b[0] >= b[1]: # δ(θ, θ) = 0
             #print 'null', a, b
             fd = 0
         elif b[0] >= b[1]: # δ(l(i1)..i, θ) = δ(l(1i)..1-1, θ) + γ(v → λ)
             #print 'insert', a, b
-            return (
+            fd = (
                 forestdist((Al[a[0]],a[1]-1), b) + strdist(An[a[0]].label, '')
             )
         elif a[0] >= a[1]: # δ(θ, l(j1)..j) = δ(θ, l(j1)..j-1) + γ(λ → w)
