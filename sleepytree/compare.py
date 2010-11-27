@@ -4,7 +4,7 @@
 #Email: tim.tadh@hackthology.com, steve.johnson.public@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
-import collections, itertools
+import sys, collections, itertools
 import tree
 from test_tree import Node
 
@@ -33,16 +33,53 @@ def post_traverse(root):
 class AnotatedTree(object):
 
     def __init__(self, root):
+        def setid(n, _id):
+            setattr(n, "_id", _id)
+            return n
+
+        #print '------------'
         self.root = root
-        self.nodes = self.idnodes(self.root)
+        self.nodes = list()
         self.lmds = list()
+        #self.nodes = self.idnodes(self.root)
         #keyroots = dict()
-        for i, n in enumerate(self.nodes):
-            lmd = self.left_most_descendent(n)
-            self.lmds.append(lmd)
+        #for i, n in enumerate(self.nodes):
+            #lmd = self.left_most_descendent(n)
+            #self.lmds.append(lmd)
             #keyroots[lmd] = i
         #self.keyroots = keyroots.values()
         #self.keyroots.sort()
+
+        stack = list()
+        pstack = list()
+        stack.append((root, collections.deque()))
+        while len(stack) > 0:
+            n, anc = stack.pop()
+            for c in n.children:
+                a = collections.deque(anc)
+                a.appendleft(n)
+                stack.append((c, a))
+            pstack.append((n, anc))
+        lmds = dict()
+        i = 0
+        while len(pstack) > 0:
+            n, anc = pstack.pop()
+            setid(n, i)
+            self.nodes.append(n)
+            #print n.label, [a.label for a in anc]
+            if not n.children:
+                lmd = i
+                for a in anc:
+                    if a not in lmds: lmds[a] = i
+                    else: break
+            else:
+                lmd = lmds[n]
+            self.lmds.append(lmd)
+            #keyroots[lmd] = i
+            i += 1
+        #self.keyroots = keyroots.values()
+        #print self.lmds
+        #print self.keyroots
 
 
     @staticmethod
@@ -143,6 +180,7 @@ def distance(A, B):
         ## i do not have to explicitly store my results or precompute them
         ## as they will be computed as necessary
 
+        #print (A.lmds[i], i), (B.lmds[j], j), tuple(xrange(A.lmds[i], i+1)), tuple(xrange(B.lmds[j], j+1))
         for x in xrange(A.lmds[i], i+1): ## the plus one is for the xrange impl
             for y in xrange(B.lmds[j], j+1):
                 # only need to check if x is an ancestor of i
@@ -151,7 +189,14 @@ def distance(A, B):
                   (x == i and y == j)):
                     v = forestdist((A.lmds[i], x), (B.lmds[j], y))
                     s(x, y, v)
-        return treedists[i][j]
+        if i in treedists and j in treedists[i]:
+            return treedists[i][j]
+        else:
+            print 'WTF'
+            print (A.lmds[i], i), (B.lmds[j], j), tuple(xrange(A.lmds[i], i+1)), tuple(xrange(B.lmds[j], j+1))
+            print x,y
+            print treedists
+            sys.exit(1)
 
     i = len(A.nodes)-1
     j = len(B.nodes)-1
