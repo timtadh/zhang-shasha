@@ -179,6 +179,11 @@ def distance(A, B):
         ## i do not have to explicitly store my results or precompute them
         ## as they will be computed as necessary
 
+        for x in xrange(A.lmds[i], i+1):
+            forestdist((A.lmds[i], x), (0, 0))
+        for y in xrange(B.lmds[j], i+1):
+            forestdist((0, 0), (B.lmds[j], y))
+
         #print (A.lmds[i], i), (B.lmds[j], j), tuple(xrange(A.lmds[i], i+1)), tuple(xrange(B.lmds[j], j+1))
         for x in xrange(A.lmds[i], i+1): ## the plus one is for the xrange impl
             for y in xrange(B.lmds[j], j+1):
