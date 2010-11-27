@@ -14,7 +14,7 @@ from sleepytree.test_tree import Node
 
 seed(os.urandom(15))
 
-N = 5
+N = 2
 
 def product(*args, **kwds):
     # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy

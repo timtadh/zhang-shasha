@@ -37,18 +37,9 @@ class AnotatedTree(object):
             setattr(n, "_id", _id)
             return n
 
-        #print '------------'
         self.root = root
         self.nodes = list()
         self.lmds = list()
-        #self.nodes = self.idnodes(self.root)
-        #keyroots = dict()
-        #for i, n in enumerate(self.nodes):
-            #lmd = self.left_most_descendent(n)
-            #self.lmds.append(lmd)
-            #keyroots[lmd] = i
-        #self.keyroots = keyroots.values()
-        #self.keyroots.sort()
 
         stack = list()
         pstack = list()
@@ -61,6 +52,7 @@ class AnotatedTree(object):
                 stack.append((c, a))
             pstack.append((n, anc))
         lmds = dict()
+        keyroots = dict()
         i = 0
         while len(pstack) > 0:
             n, anc = pstack.pop()
@@ -75,11 +67,11 @@ class AnotatedTree(object):
             else:
                 lmd = lmds[n]
             self.lmds.append(lmd)
-            #keyroots[lmd] = i
+            keyroots[lmd] = i
             i += 1
-        #self.keyroots = keyroots.values()
-        #print self.lmds
-        #print self.keyroots
+        self.keyroots = sorted(keyroots.values())
+        print self.lmds
+        print self.keyroots
 
 
     @staticmethod
