@@ -9,9 +9,10 @@ import tree
 from test_tree import Node
 
 try:
-    from editdist import distance as strdist
+    from editdisst import distance as strdist
 except ImportError:
     def strdist(a, b):
+        return 1
         if a == b:
             return 0
         else:
@@ -58,8 +59,107 @@ class AnotatedTree(object):
 
 def distance(A, B):
     A, B = AnotatedTree(A), AnotatedTree(B)
+    treedists = dict()
+    forestdists = dict()
+    def forestdist(a, b):
+        key = (a, b)
+        if key in forestdists:
+            print 'memoized', key
+            return forestdists[key]
+        #print forestdists
 
-    for i, j in itertools.product(A.keyroots, B.keyroots):
+        Al = A.lmds
+        Bl = B.lmds
+        An = A.nodes
+        Bn = B.nodes
+
+
+        if a[0] >= a[1] and b[0] >= b[1]: # δ(θ, θ) = 0
+            print 'null', a, b
+            fd = 0
+        elif b[0] >= b[1]: # δ(l(i1)..i, θ) = δ(l(1i)..1-1, θ) + γ(v → λ)
+            print 'insert', a, b
+            return (
+                forestdist((Al[a[0]],a[1]-1), b) + strdist(An[a[0]].label, '')
+            )
+        elif a[0] >= a[1]: # δ(θ, l(j1)..j) = δ(θ, l(j1)..j-1) + γ(λ → w)
+            print 'delete', a, b
+            fd = (
+                forestdist(a, (Bl[b[0]],b[1]-1)) + strdist('', Bn[b[0]].label)
+            )
+        else:
+            print 'complex', a,b
+            #import pdb
+            #pdb.set_trace()
+            if A.lmds[a[0]] == A.lmds[a[1]] and B.lmds[b[0]] == B.lmds[b[1]]:
+                #                   +-
+                #                   | δ(l(i1)..i-1, l(j1)..j) + γ(v → λ)
+                # δ(F1 , F2 ) = min-+ δ(l(i1)..i , l(j1)..j-1) + γ(λ → w)
+                #                   | δ(l(i1)..i-1, l(j1)..j-1) + γ(v → w)
+                #                   +-
+                fd = min(
+                    (
+                        forestdist((Al[a[0]],a[1]-1), b)
+                        + strdist(An[a[0]].label, '')
+                    ),
+                    (
+                        forestdist(a, (Bl[b[0]],b[1]-1))
+                        + strdist('', Bn[b[0]].label)
+                    ),
+                    (
+                        forestdist((Al[a[0]],a[1]-1), (Bl[b[0]],b[1]-1))
+                        +strdist(An[a[0]].label, Bn[b[0]].label)
+                    )
+                )
+            else:
+                #                   +-
+                #                   | δ(l(i1)..i-1, l(j1)..j) + γ(v → λ)
+                # δ(F1 , F2 ) = min-+ δ(l(i1)..i , l(j1)..j-1) + γ(λ → w)
+                #                   | δ(l(i1)..l(i)-1, l(j1)..l(j)-1) + treedist(i,j)
+                #                   +-
+                fd = min(
+                    (
+                        forestdist((Al[a[0]],a[1]-1), b)
+                        + strdist(An[a[0]].label, '')
+                    ),
+                    (
+                        forestdist(a, (Bl[b[0]],b[1]-1))
+                        + strdist('', Bn[b[0]].label)
+                    ),
+                    (
+                        forestdist((Al[a[0]],Al[a[1]]-1), (Bl[b[0]],Bl[b[1]]-1))
+                        + treedist(a[1], b[1])
+                    )
+                )
+        forestdists[key] = fd
+        return fd
+    def treedist(i, j):
+        if i in treedists and j in treedists[i]: return treedists[i][j]
+        def s(i, j, v):
+            if i not in treedists: treedists[i] = dict()
+            treedists[i][j] = v
+
+        ## Note because my algorithm is memoized rather than dynamic in structure
+        ## i do not have to explicitly store my results or precompute them
+        ## as they will be computed as necessary
+
+        for x in xrange(A.lmds[i], i+1): ## the plus one is for the xrange impl
+            for y in xrange(B.lmds[j], j+1):
+                print (A.lmds[i], x), (B.lmds[j], y), 'td'
+                #if A.lmds[i] == A.lmds[x] and B.lmds[j] == B.lmds[y]:
+                s(x, y, forestdist((A.lmds[i], x), (B.lmds[j], y)))
+
+        return treedists[i][j]
+
+    for i, j in ((i, j) for i in A.keyroots for j in B.keyroots):
+        #print i, j, treedist(i, j)
+        x = treedist(i,j)
+        print '----->', (i+1,j+1), x
+        forestdists = dict()
+    for i in sorted(treedists.keys()):
+        for j in sorted(treedists.keys()):
+            print treedists[i][j],
+        print
 
 
 
