@@ -33,54 +33,17 @@ def post_traverse(root):
 class AnotatedTree(object):
 
     def __init__(self, root):
-
-        def setid(n, _id):
-            setattr(n, "_id", _id)
-            return n
-
-        #print '------------'
         self.root = root
-        self.nodes = list()
+        self.nodes = self.idnodes(self.root)
         self.lmds = list()
-        #self.nodes = self.idnodes(self.root)
         #keyroots = dict()
-        #for i, n in enumerate(self.nodes):
-            #lmd = self.left_most_descendent(n)
-            #self.lmds.append(lmd)
+        for i, n in enumerate(self.nodes):
+            lmd = self.left_most_descendent(n)
+            self.lmds.append(lmd)
             #keyroots[lmd] = i
         #self.keyroots = keyroots.values()
         #self.keyroots.sort()
 
-        stack = list()
-        pstack = list()
-        stack.append((root, collections.deque()))
-        while len(stack) > 0:
-            n, anc = stack.pop()
-            for c in n.children:
-                a = collections.deque(anc)
-                a.appendleft(n)
-                stack.append((c, a))
-            pstack.append((n, anc))
-        lmds = dict()
-        i = 0
-        while len(pstack) > 0:
-            n, anc = pstack.pop()
-            setid(n, i)
-            self.nodes.append(n)
-            #print n.label, [a.label for a in anc]
-            if not n.children:
-                lmd = i
-                for a in anc:
-                    if a not in lmds: lmds[a] = i
-                    else: break
-            else:
-                lmd = lmds[n]
-            self.lmds.append(lmd)
-            #keyroots[lmd] = i
-            i += 1
-        #self.keyroots = keyroots.values()
-        #print self.lmds
-        #print self.keyroots
 
     @staticmethod
     def idnodes(root):
