@@ -44,19 +44,22 @@ class AnotatedTree(object):
         stack = list()
         pstack = list()
         stack.append((root, collections.deque()))
+        j = 0
         while len(stack) > 0:
             n, anc = stack.pop()
+            setid(n, j)
             for c in n.children:
                 a = collections.deque(anc)
-                a.appendleft(n)
+                a.appendleft(n._id)
                 stack.append((c, a))
             pstack.append((n, anc))
+            j += 1
         lmds = dict()
         keyroots = dict()
         i = 0
         while len(pstack) > 0:
             n, anc = pstack.pop()
-            setid(n, i)
+            #print list(anc)
             self.nodes.append(n)
             #print n.label, [a.label for a in anc]
             if not n.children:
@@ -65,7 +68,10 @@ class AnotatedTree(object):
                     if a not in lmds: lmds[a] = i
                     else: break
             else:
-                lmd = lmds[n]
+                try: lmd = lmds[n._id]
+                except:
+                    import pdb
+                    pdb.set_trace()
             self.lmds.append(lmd)
             keyroots[lmd] = i
             i += 1
