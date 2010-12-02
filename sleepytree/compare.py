@@ -30,7 +30,7 @@ def post_traverse(root):
         n = pstack.pop()
         yield n
 
-class AnotatedTree(object):
+class AnnotatedTree(object):
 
     def __init__(self, root):
         def setid(n, _id):
@@ -74,7 +74,7 @@ class AnotatedTree(object):
         #print self.keyroots
 
 def distance(A, B):
-    A, B = AnotatedTree(A), AnotatedTree(B)
+    A, B = AnnotatedTree(A), AnnotatedTree(B)
     treedists = dict()
 
     def treedist(i, j):
