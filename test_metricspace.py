@@ -10,56 +10,23 @@ import copy, collections
 from random import randint, seed, shuffle
 
 from sleepytree import compare
+from sleepytree.test_tree import Node
 
 seed(os.urandom(15))
 
-class Node(object):
+N = 10
 
-    def __init__(self, label):
-        self.label = label
-        self.children = list()
+def product(*args, **kwds):
+    # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
+    # product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
+    pools = map(tuple, args) * kwds.get('repeat', 1)
+    result = [[]]
+    for pool in pools:
+        result = [x+[y] for x in result for y in pool]
+    for prod in result:
+        yield tuple(prod)
 
-    def addkid(self, node, before=False):
-        if before:  self.children.insert(0, node)
-        else:   self.children.append(node)
-        return self
-
-    def get(self, label):
-        if self.label == label: return self
-        for c in self.children:
-            if label in c: return c.get(label)
-
-    def iter(self):
-        queue = collections.deque()
-        queue.append(self)
-        while len(queue) > 0:
-            n = queue.popleft()
-            for c in n.children: queue.append(c)
-            yield n
-
-    def __contains__(self, b):
-        if isinstance(b, str) and self.label == b: return 1
-        elif not isinstance(b, str) and self.label == b.label: return 1
-        elif (isinstance(b, str) and self.label != b) or self.label != b.label:
-            return sum(b in c for c in self.children)
-        raise TypeError, "Object %s is not of type str or Node" % repr(b)
-
-    def __eq__(self, b):
-        if b is None: return False
-        if not isinstance(b, Node):
-            raise TypeError, "Must compare against type Node"
-        return self.label == b.label
-
-    def __ne__(self, b):
-        return not self.__eq__(b)
-
-    def __repr__(self):
-        return super(Node, self).__repr__()[:-1] + " %s>" % self.label
-
-    def __str__(self):
-        s = "%d:%s" % (len(self.children), self.label)
-        s = '\n'.join([s]+[str(c) for c in self.children])
-        return s
+setattr(itertools, 'product', product)
 
 tree1_nodes = ['a','b','c','d','e','f']
 def tree1():
@@ -162,36 +129,51 @@ class TestCompare(unittest.TestCase):
         for a,b in trees:
             ab = compare.distance(a,b)
             ba = compare.distance(b,a)
+            #print '-----------------------------'
+            #print a
+            #print '------'
+            #print b
+            #print '------'
+            #print ab, ba
             self.assertEquals(ab,ba)
             self.assertTrue((ab == 0 and a is b) or a is not b)
+            #break
         trees = itertools.product([tree1(), tree2(), tree3(), tree4()], repeat=3)
         for a,b,c in trees:
             ab = compare.distance(a,b)
             bc = compare.distance(b,c)
             ac = compare.distance(a,c)
             self.assertTrue(ac <= ab + bc)
+            #break
 
     #def test_randtree(self):
         #print randtree(5, repeat=3, width=2)
 
     def test_symmetry(self):
-        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), repeat=2)
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), repeat=2)
         for a,b in trees:
-            self.assertEquals(compare.distance(a,b), compare.distance(b,a))
+            ab = compare.distance(a,b)
+            ba = compare.distance(b,a)
+            #print '-----------------------------'
+            #print ab, ba
+            self.assertEquals(ab, ba)
 
     def test_nondegenercy(self):
-        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), repeat=2)
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), repeat=2)
         for a,b in trees:
             d = compare.distance(a,b)
+            #print '-----------------------------'
+            #print d, a is b
             self.assertTrue((d == 0 and a is b) or a is not b)
 
     def test_triangle_inequality(self):
-        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(10)), (randtree(5, repeat=3, width=2) for x in xrange(10)), (randtree(5, repeat=3, width=2) for x in xrange(10)))
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), (randtree(5, repeat=3, width=2) for x in xrange(N)), (randtree(5, repeat=3, width=2) for x in xrange(N)))
         for a,b,c in trees:
-
+            #print '--------------------------------'
             ab = compare.distance(a,b)
             bc = compare.distance(b,c)
             ac = compare.distance(a,c)
+            #print ab, bc, ac
             self.assertTrue(ac <= ab + bc)
 
 if __name__ == '__main__':
