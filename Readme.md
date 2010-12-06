@@ -3,7 +3,7 @@ Sleepytree
 
 ### Estimate tree edit distance using the Zhang-Shasha algorithm
 
-Steve Johnson ([steve.johnson.public@gmail.com](steve.johnson.public@gmail.com))
+Steve Johnson ([steve.johnson.public@gmail.com](steve.johnson.public@gmail.com)) and Tim Henderson ([tim.tadh@gmail.com](tim.tadh@gmail.com))
 
 "Zhang Shasha" -> "ZSS" -> "Zzz." Get it? Sleepy? Trees? Ha!
 
