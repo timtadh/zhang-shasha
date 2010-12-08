@@ -9,8 +9,8 @@ import unittest, os, sys, base64, itertools, random, time
 import copy, collections
 from random import randint, seed, shuffle
 
-from sleepytree import compare
-from sleepytree.test_tree import Node
+from zss import compare
+from zss.test_tree import Node
 
 seed(os.urandom(15))
 
