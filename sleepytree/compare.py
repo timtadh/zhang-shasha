@@ -9,7 +9,7 @@ import tree
 from test_tree import Node
 
 try:
-    from editdidst import distance as strdist
+    from editdist import distance as strdist
 except ImportError:
     def strdist(a, b):
         if a == b:

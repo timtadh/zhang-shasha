@@ -1,11 +1,11 @@
 from distutils.core import setup
 
-setup(name='foo',
+setup(name='zss',
       version='1.0',
       description='Tree edit distance using the Zhang Shasha algorithm',
-      author='Steve Johnson',
-      author_email='steve.johnson.public@gmail.com',
-      url='https://www.github.com/irskep/sleepytree',
-      packages=['sleepytree'],
+      author='Tim Henderson',
+      author_email='tim.tadh@gmail.com',
+      url='https://www.github.com/timtadh/sleepytree',
+      packages=['zss'],
       requires=['editdist']
-      )
+)
