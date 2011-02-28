@@ -5,7 +5,6 @@
 #For licensing see the LICENSE file in the top level directory.
 
 import sys, collections, itertools
-import tree
 from test_tree import Node
 
 try:
@@ -91,13 +90,15 @@ def distance(A, B):
 
         fd = forestdists = dict()
         def gfd(a, b): # get an item from the forest dists array
+            if (a,b) in forestdists:
+                return forestdists[(a,b)]
             if a[0] >= a[1] and b[0] >= b[1]: # δ(θ, θ) = 0
                 return 0
             if b[0] >= b[1]:
                 return forestdists[(a,(0,0))]
             if a[0] >= a[1]:
                 return forestdists[((0,0),b)]
-            return forestdists[(a,b)]
+            raise KeyError, (a,b)
 
         Al = A.lmds
         Bl = B.lmds

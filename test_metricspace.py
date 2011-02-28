@@ -5,7 +5,7 @@
 #For licensing see the LICENSE file in the top level directory.
 
 
-import unittest, os, sys, base64, itertools, random, time
+import unittest, os, sys, base64, itertools, random, time, copy
 import copy, collections
 from random import randint, seed, shuffle
 
@@ -175,6 +175,35 @@ class TestCompare(unittest.TestCase):
             ac = compare.distance(a,c)
             #print ab, bc, ac
             self.assertTrue(ac <= ab + bc)
+
+    def test_simplelabelchange(self):
+        A = (
+            Node("f")
+                .addkid(Node("a")
+                    .addkid(Node("h"))
+                    .addkid(Node("c")
+                        .addkid(Node("l"))))
+                .addkid(Node("e"))
+            )
+        B = (
+            Node("f")
+                .addkid(Node("a")
+                    .addkid(Node("d"))
+                    .addkid(Node("c")
+                        .addkid(Node("b"))))
+                .addkid(Node("e"))
+            )
+        assert compare.distance(A, B) == 2
+        #print 'distance', d
+
+    def test_labelchange(self):
+
+        for A in (randtree(5, repeat=3, width=2) for x in xrange(N*4)):
+            B = copy.deepcopy(A)
+            node = random.choice([n for n in B.iter()])
+            old_label = str(node.label)
+            node.label = 'xty'
+            assert compare.distance(A, B) == compare.strdist(old_label, node.label)
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
