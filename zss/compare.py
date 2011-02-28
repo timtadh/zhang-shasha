@@ -37,8 +37,12 @@ class AnnotatedTree(object):
             return n
 
         self.root = root
-        self.nodes = list()
-        self.lmds = list()
+        self.nodes = list() # a pre-order enumeration of the nodes in the tree
+        self.lmds = list()  # left most descendents
+        self.keyroots = None
+            # k and k' are nodes specified in the pre-order enumeration.
+            # keyroots = {k | there exists no k'>k such that lmd(k) == lmd(k')}
+            # see paper for more on keyroots
 
         stack = list()
         pstack = list()
@@ -75,8 +79,6 @@ class AnnotatedTree(object):
             keyroots[lmd] = i
             i += 1
         self.keyroots = sorted(keyroots.values())
-        #print self.lmds
-        #print self.keyroots
 
 def distance(A, B):
     A, B = AnnotatedTree(A), AnnotatedTree(B)

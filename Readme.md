@@ -29,7 +29,8 @@ To find the distance between two object trees, call `compare.distance(root1,
 root2)`.
 
 The object format is used by the tests and is probably the easiest to work with.
-A simple example:
+
+#### A simple example:
 
     # Node(label, children)
     # a---> b
@@ -38,6 +39,29 @@ A simple example:
     b = Node('b', [])
     a = Node('a', [b, c])
     assert compare.distance(a, a) == 0
+
+#### Another Example:
+    from zss import compare
+    from zss.test_tree import Node
+
+    A = (
+        Node("f")
+            .addkid(Node("a")
+                .addkid(Node("h"))
+                .addkid(Node("c")
+                    .addkid(Node("l"))))
+            .addkid(Node("e"))
+        )
+    B = (
+        Node("f")
+            .addkid(Node("a")
+                .addkid(Node("d"))
+                .addkid(Node("c")
+                    .addkid(Node("b"))))
+            .addkid(Node("e"))
+        )
+    assert compare.distance(A, B) == 2
+
 
 See `test_metricspace.py` for more examples.
 
@@ -55,6 +79,7 @@ If you would like to discuss the paper, or the the tree edit distance problem
 ### Papers
 
 The original paper describing the algorithm:
+
 [Kaizhong Zhang and Dennis Shasha. Simple fast algorithms for the editing distance between trees and related problems. SIAM Journal of Computing, 18:1245–1262, 1989.](http://www.grantjenks.com/wiki/_media/ideas:simple_fast_algorithms_for_the_editing_distance_between_tree_and_related_problems.pdf)
 
 [Slide deck overview of Zhang-Shasha](http://www.inf.unibz.it/dis/teaching/ATA/ata7-handout-1x1.pdf)
