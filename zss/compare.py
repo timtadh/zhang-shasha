@@ -120,8 +120,7 @@ def distance(A, B):
             for y in xrange(Bl[j], j+1):
                 # only need to check if x is an ancestor of i
                 # and y is an ancestor of j
-                if (A.lmds[i] == A.lmds[x] and B.lmds[j] == B.lmds[y] or
-                  (x == i and y == j)):
+                if A.lmds[i] == A.lmds[x] and B.lmds[j] == B.lmds[y]:
                     #                   +-
                     #                   | δ(l(i1)..i-1, l(j1)..j) + γ(v → λ)
                     # δ(F1 , F2 ) = min-+ δ(l(i1)..i , l(j1)..j-1) + γ(λ → w)
