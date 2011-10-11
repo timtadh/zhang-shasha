@@ -32,7 +32,6 @@ def post_traverse(root):
 class AnnotatedTree(object):
 
     def __init__(self, root):
-        print '-xxx'
         def setid(n, _id):
             setattr(n, "_id", _id)
             return n
@@ -52,7 +51,6 @@ class AnnotatedTree(object):
         while len(stack) > 0:
             n, anc = stack.pop()
             setid(n, j)
-            print n.label, n._id
             for c in n.children:
                 a = collections.deque(anc)
                 a.appendleft(n._id)
