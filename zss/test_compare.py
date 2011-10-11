@@ -35,37 +35,33 @@ def test_post_traverse():
         [n.label for n in compare.post_traverse(B)] == ['a','b','d','c','e','f']
     )
 
-def test_idnodes():
-    A, B = simple_trees()
-    A_nodes = compare.AnotatedTree.idnodes(A)
-    B_nodes = compare.AnotatedTree.idnodes(B)
-    for i, n in enumerate(A_nodes):
+
+def test_nodes():
+    A, B = [compare.AnnotatedTree(t) for t in simple_trees()]
+    for i, n in enumerate(reversed(A.nodes)):
         assert hasattr(n, '_id')
         assert n._id == i
-    for i, n in enumerate(B_nodes):
+    for i, n in enumerate(reversed(B.nodes)):
         assert hasattr(n, '_id')
         assert n._id == i
 
 def test_left_most_descendent():
-    A, B = simple_trees()
-    A_nodes = compare.AnotatedTree.idnodes(A)
-    B_nodes = compare.AnotatedTree.idnodes(B)
-    assert compare.AnotatedTree.left_most_descendent(A_nodes[0]) == 0
-    assert compare.AnotatedTree.left_most_descendent(A_nodes[1]) == 1
-    assert compare.AnotatedTree.left_most_descendent(A_nodes[2]) == 1
-    assert compare.AnotatedTree.left_most_descendent(A_nodes[3]) == 0
-    assert compare.AnotatedTree.left_most_descendent(A_nodes[4]) == 4
-    assert compare.AnotatedTree.left_most_descendent(A_nodes[5]) == 0
+    A, B = [compare.AnnotatedTree(t) for t in simple_trees()]
+    assert A.lmds[0] == 0
+    assert A.lmds[1] == 1
+    assert A.lmds[2] == 1
+    assert A.lmds[3] == 0
+    assert A.lmds[4] == 4
+    assert A.lmds[5] == 0
 
-    assert compare.AnotatedTree.left_most_descendent(B_nodes[0]) == 0
-    assert compare.AnotatedTree.left_most_descendent(B_nodes[1]) == 1
-    assert compare.AnotatedTree.left_most_descendent(B_nodes[2]) == 0
-    assert compare.AnotatedTree.left_most_descendent(B_nodes[3]) == 0
-    assert compare.AnotatedTree.left_most_descendent(B_nodes[4]) == 4
-    assert compare.AnotatedTree.left_most_descendent(B_nodes[5]) == 0
+    assert B.lmds[0] == 0
+    assert B.lmds[1] == 1
+    assert B.lmds[2] == 0
+    assert B.lmds[3] == 0
+    assert B.lmds[4] == 4
+    assert B.lmds[5] == 0
 
 def test_keyroots():
-    A, B = simple_trees()
-    A, B = compare.AnotatedTree(A), compare.AnotatedTree(B)
+    A, B = [compare.AnnotatedTree(t) for t in simple_trees()]
     assert A.keyroots == [2, 4, 5]
     assert B.keyroots == [1, 4, 5]
