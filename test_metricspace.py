@@ -89,6 +89,23 @@ def randtree(depth=2, alpha='abcdefghijklmnopqrstuvwxyz', repeat=2, width=2):
         c = list()
     return root
 
+def test_incorrect_behavior_regression():
+    A = (
+     Node("a")
+       .addkid(Node("b")
+         .addkid(Node("x"))
+         .addkid(Node("y"))
+       )
+     )
+    B = (
+     Node("a")
+       .addkid(Node("x"))
+       .addkid(Node("b")
+         .addkid(Node("y"))
+       )
+     )
+    assert compare.distance(A, B) == 2
+
 class TestTestNode(unittest.TestCase):
 
     def test_contains(self):
