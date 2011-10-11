@@ -65,20 +65,3 @@ def test_keyroots():
     A, B = [compare.AnnotatedTree(t) for t in simple_trees()]
     assert A.keyroots == [2, 4, 5]
     assert B.keyroots == [1, 4, 5]
-
-def test_incorrect_behavior_regression():
-    A = (
-     Node("a")
-       .addkid(Node("b")
-         .addkid(Node("x"))
-         .addkid(Node("y"))
-       )
-     )
-    B = (
-     Node("a")
-       .addkid(Node("x"))
-       .addkid(Node("b")
-         .addkid(Node("y"))
-       )
-     )
-    assert compare.distance(A, B) == 2
