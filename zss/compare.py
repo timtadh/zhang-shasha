@@ -170,9 +170,10 @@ def distance(A, B):
             print treedists
             sys.exit(1)
 
+    x = 0
     for i in A.keyroots:
         for j in B.keyroots:
-            x = treedist(i,j)
+            x = max(x, treedist(i,j))
     return x
 
 
