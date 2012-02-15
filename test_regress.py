@@ -13,6 +13,11 @@ from zss.test_tree import Node
 
 seed(os.urandom(15))
 
+def test_empty_tree_distance():
+    assert compare.distance(Node('a'), Node('')) == 1 # (3)
+    assert compare.distance(Node('a'), Node('')) == 1 # (4)
+    assert compare.distance(Node(''), Node('b')) == 1 # (5)
+
 def test_paper_tree():
     A = (
       Node("f")
