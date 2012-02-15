@@ -172,10 +172,9 @@ def distance(A, B):
 
     for i in A.keyroots:
         for j in B.keyroots:
-            x = treedist(i,j)
-    return x
+            treedist(i,j)
 
-
+    return treedists[A.keyroots[-1]][B.keyroots[-1]]
 
 
 if __name__ == '__main__':
