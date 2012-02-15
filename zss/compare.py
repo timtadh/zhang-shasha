@@ -99,25 +99,13 @@ def distance(A, B):
         ioff = Al[i] - 1
         joff = Bl[j] - 1
 
-        xmax = i - Al[i] + 2
-        ymax = j - Bl[j] + 2
-
-        #print 'm,n', m,n
-        #print 'ioff,joff', ioff,joff
-        #print 'xmax,ymax', xmax,ymax
         for x in xrange(1, m): # δ(l(i1)..i, θ) = δ(l(1i)..1-1, θ) + γ(v → λ)
-            #treedists[x][0] = fd[x][0] = fd[x-1][0] + strdist(An[x-1].label, '')
             fd[x][0] = fd[x-1][0] + strdist(An[x-1].label, '')
         for y in xrange(1, n): # δ(θ, l(j1)..j) = δ(θ, l(j1)..j-1) + γ(λ → w)
-            #treedists[0][y] = fd[0][y] = fd[0][y-1] + strdist('', Bn[y-1].label)
             fd[0][y] = fd[0][y-1] + strdist('', Bn[y-1].label)
-        #print 'fd'
-        #print fd
 
         for x in xrange(1, m): ## the plus one is for the xrange impl
             for y in xrange(1, n):
-                #print '->', (i, x), (j, y)
-                #print ' '*5, (Al[i], Al[x+ioff]), (Bl[j], Bl[y+joff])
                 # only need to check if x is an ancestor of i
                 # and y is an ancestor of j
                 if Al[i] == Al[x+ioff] and Bl[j] == Bl[y+joff]:
@@ -148,13 +136,9 @@ def distance(A, B):
                         fd[p][q] + treedists[x+ioff][y+joff]
                     )                        
 
-    #print
     for i in A.keyroots:
         for j in B.keyroots:
             treedist(i,j)
-            #print (i,j)
-            #print treedists
-            #print
 
     return treedists[-1][-1]
 
