@@ -1,0 +1,4 @@
+distribute==0.6.19
+nose==1.1.2
+numpy==1.6.1
+wsgiref==0.1.2
