@@ -4,7 +4,6 @@
 #Email: tim.tadh@hackthology.com
 #For licensing see the LICENSE file in the top level directory.
 
-
 import unittest, os, sys, base64, itertools, random, time, copy
 import copy, collections
 from random import randint, seed, shuffle
@@ -14,7 +13,7 @@ from zss.test_tree import Node
 
 seed(os.urandom(15))
 
-N = 10
+N = 3
 
 def product(*args, **kwds):
     # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
@@ -25,8 +24,8 @@ def product(*args, **kwds):
         result = [x+[y] for x in result for y in pool]
     for prod in result:
         yield tuple(prod)
-
-setattr(itertools, 'product', product)
+if not hasattr(itertools, 'product'):
+    setattr(itertools, 'product', product)
 
 tree1_nodes = ['a','b','c','d','e','f']
 def tree1():
@@ -88,23 +87,6 @@ def randtree(depth=2, alpha='abcdefghijklmnopqrstuvwxyz', repeat=2, width=2):
         p = c
         c = list()
     return root
-
-def test_incorrect_behavior_regression():
-    A = (
-     Node("a")
-       .addkid(Node("b")
-         .addkid(Node("x"))
-         .addkid(Node("y"))
-       )
-     )
-    B = (
-     Node("a")
-       .addkid(Node("x"))
-       .addkid(Node("b")
-         .addkid(Node("y"))
-       )
-     )
-    assert compare.distance(A, B) == 2
 
 class TestTestNode(unittest.TestCase):
 
