@@ -175,25 +175,6 @@ class TestCompare(unittest.TestCase):
             #print ab, bc, ac
             self.assertTrue(ac <= ab + bc)
 
-    def test_simplelabelchange(self):
-        A = (
-            Node("f")
-                .addkid(Node("a")
-                    .addkid(Node("h"))
-                    .addkid(Node("c")
-                        .addkid(Node("l"))))
-                .addkid(Node("e"))
-            )
-        B = (
-            Node("f")
-                .addkid(Node("a")
-                    .addkid(Node("d"))
-                    .addkid(Node("c")
-                        .addkid(Node("b"))))
-                .addkid(Node("e"))
-            )
-        assert compare.distance(A, B) == 2
-        #print 'distance', d
 
     def test_labelchange(self):
 
