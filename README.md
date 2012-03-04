@@ -1,7 +1,7 @@
 Zhang Shasha
 ============
 
-### Estimate tree edit distance using the Zhang-Shasha algorithm
+### Compute Tree Edit Distance Using the Zhang-Shasha Algorithm
 
 Steve Johnson ([steve.johnson.public@gmail.com](steve.johnson.public@gmail.com))
 and Tim Henderson ([tim.tadh@gmail.com](tim.tadh@gmail.com))
@@ -19,6 +19,8 @@ easily be removed)
 
 Installation:
 
+    cd to/the/base/dir/of/repo
+    cat reqs.txt | xargs pip install
     python setup.py install
 
 Tree Format and Usage
@@ -79,6 +81,12 @@ was re-implemented from scratch based on the original paper by Zhang and Shasha.
 If you would like to discuss the paper, or the the tree edit distance problem
 (we have implemented a few other algorithms as well) please email the authors.
 
+### Another Good Implementation
+
+Another good implementation can be found on Dr. Nikolaus Augsten's site. It is
+called [approxlib](http://www.inf.unibz.it/~augsten/src/) and it contains a
+number of useful tree distance algorithms. Highly recommended.
+
 ### Papers
 
 The original paper describing the algorithm:
@@ -88,3 +96,4 @@ The original paper describing the algorithm:
 [Slide deck overview of Zhang-Shasha](http://www.inf.unibz.it/dis/teaching/ATA/ata7-handout-1x1.pdf)
 
 [Another paper describing Zhang-Shasha](http://research.cs.queensu.ca/TechReports/Reports/1995-372.pdf)
+
