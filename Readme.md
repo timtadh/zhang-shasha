@@ -14,6 +14,9 @@ Zhang Shasha requires at least Python 2.5. If the
 will be used to determine replacement cost instead of a simple 1/0 equality
 comparison.
 
+In addition the current version uses Numpy (although that dependency could
+easily be removed)
+
 Installation:
 
     python setup.py install
