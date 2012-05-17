@@ -6,6 +6,12 @@ Zhang Shasha
 Steve Johnson ([steve.johnson.public@gmail.com](steve.johnson.public@gmail.com))
 and Tim Henderson ([tim.tadh@gmail.com](tim.tadh@gmail.com))
 
+If you like this module you may also like
+[pygram](https://github.com/timtadh/PyGram) which computes an approximation to
+tree edit distance. The difference? PyGram (which uses the PQ-Gram algorithm) is
+in general much faster than the Zhang-Shasha algorithm but it doesn't given an
+exact edit score like Zhang-Shasha does.
+
 Installation
 ------------
 
