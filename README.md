@@ -3,8 +3,8 @@ Zhang Shasha
 
 ### Compute Tree Edit Distance Using the Zhang-Shasha Algorithm
 
-Steve Johnson ([steve.johnson.public@gmail.com](steve.johnson.public@gmail.com))
-and Tim Henderson ([tim.tadh@gmail.com](tim.tadh@gmail.com))
+Tim Henderson ([tim.tadh@gmail.com](tim.tadh@gmail.com))
+and Steve Johnson ([steve@steveasleep.com](steve@steveasleep.com))
 
 If you like this module you may also like
 [pygram](https://github.com/timtadh/PyGram) which computes an approximation to
