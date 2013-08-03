@@ -51,7 +51,7 @@ The object format is used by the tests and is probably the easiest to work with.
     assert compare.distance(a, a) == 0
 
 #### Another Example:
-    from zss import compare
+    from zss import distance
     from zss.test_tree import Node
 
     A = (
@@ -70,7 +70,7 @@ The object format is used by the tests and is probably the easiest to work with.
                     .addkid(Node("b"))))
             .addkid(Node("e"))
         )
-    assert compare.distance(A, B) == 2
+    assert distance(A, B) == 2
 
 
 See `test_metricspace.py` for more examples.
