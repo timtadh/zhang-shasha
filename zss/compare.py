@@ -5,7 +5,6 @@
 #For licensing see the LICENSE file in the top level directory.
 
 import sys, collections, itertools
-from test_tree import Node
 
 try:
     import numpy as np
@@ -102,7 +101,7 @@ def distance(A, B):
 
         m = i - Al[i] + 2
         n = j - Bl[j] + 2
-        fd = forestdist = zeros((m,n), int)
+        fd = zeros((m, n), int)
 
         ioff = Al[i] - 1
         joff = Bl[j] - 1
@@ -124,9 +123,9 @@ def distance(A, B):
                     #                   +-
                     fd[x][y] = min(
                         fd[x-1][y] + strdist(An[x+ioff].label, ''),
-                        fd[x][y-1] + strdist('', Bn[y+joff].label), 
+                        fd[x][y-1] + strdist('', Bn[y+joff].label),
                         fd[x-1][y-1] + strdist(An[x+ioff].label, Bn[y+joff].label)
-                    )                        
+                    )
                     treedists[x+ioff][y+joff] = fd[x][y]
                 else:
                     #                   +-
@@ -140,35 +139,12 @@ def distance(A, B):
                     #print (p, q), (len(fd), len(fd[0]))
                     fd[x][y] = min(
                         fd[x-1][y] + strdist(An[x+ioff].label, ''),
-                        fd[x][y-1] + strdist('', Bn[y+joff].label), 
+                        fd[x][y-1] + strdist('', Bn[y+joff].label),
                         fd[p][q] + treedists[x+ioff][y+joff]
-                    )                        
+                    )
 
     for i in A.keyroots:
         for j in B.keyroots:
             treedist(i,j)
 
     return treedists[-1][-1]
-
-
-if __name__ == '__main__':
-    A = (
-        Node("f")
-            .addkid(Node("d")
-                .addkid(Node("a"))
-                .addkid(Node("c")
-                    .addkid(Node("b"))))
-            .addkid(Node("e"))
-        )
-    B = (
-        Node("f")
-            .addkid(Node("c")
-                .addkid(Node("d")
-                    .addkid(Node("a"))
-                    .addkid(Node("b"))))
-            .addkid(Node("e"))
-        )
-    d = distance(A, B)
-    print
-    print
-    print 'distance', d

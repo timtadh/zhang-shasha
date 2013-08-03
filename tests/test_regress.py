@@ -9,7 +9,7 @@ import copy, collections
 from random import randint, seed, shuffle
 
 from zss import compare
-from zss.test_tree import Node
+from .test_tree import Node
 
 seed(os.urandom(15))
 
