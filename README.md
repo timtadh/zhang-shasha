@@ -25,8 +25,7 @@ easily be removed)
 
 Installation:
 
-    cd to/the/base/dir/of/repo
-    cat reqs.txt | xargs pip install
+    pip install -r requirements.txt
     python setup.py install
 
 Tree Format and Usage
