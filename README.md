@@ -51,8 +51,7 @@ The object format is used by the tests and is probably the easiest to work with.
     assert compare.distance(a, a) == 0
 
 #### Another Example:
-    from zss import distance
-    from zss.test_tree import Node
+    from zss import distance, Node
 
     A = (
         Node("f")
