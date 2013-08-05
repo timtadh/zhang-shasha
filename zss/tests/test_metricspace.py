@@ -8,10 +8,7 @@ import unittest, os, sys, base64, itertools, random, time, copy
 import copy, collections
 from random import randint, seed, shuffle
 
-from zss import (
-    compare,
-    Node,
-)
+from zss import compare, Node
 
 seed(os.urandom(15))
 
