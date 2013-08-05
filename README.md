@@ -25,8 +25,7 @@ easily be removed)
 
 Installation:
 
-    cd to/the/base/dir/of/repo
-    cat reqs.txt | xargs pip install
+    pip install -r requirements.txt
     python setup.py install
 
 Tree Format and Usage
@@ -52,8 +51,7 @@ The object format is used by the tests and is probably the easiest to work with.
     assert compare.distance(a, a) == 0
 
 #### Another Example:
-    from zss import compare
-    from zss.test_tree import Node
+    from zss import distance, Node
 
     A = (
         Node("f")
@@ -71,7 +69,7 @@ The object format is used by the tests and is probably the easiest to work with.
                     .addkid(Node("b"))))
             .addkid(Node("e"))
         )
-    assert compare.distance(A, B) == 2
+    assert distance(A, B) == 2
 
 
 See `test_metricspace.py` for more examples.

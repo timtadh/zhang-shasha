@@ -4,8 +4,7 @@
 #Email: tim.tadh@hackthology.com, steve.johnson.public@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
-from test_tree import Node
-import compare
+from zss import compare, Node
 
 def simple_trees():
     A = (
