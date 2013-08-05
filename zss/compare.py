@@ -38,6 +38,7 @@ def post_traverse(root):
         n = pstack.pop()
         yield n
 
+
 class AnnotatedTree(object):
 
     def __init__(self, root):
@@ -46,8 +47,8 @@ class AnnotatedTree(object):
             return n
 
         self.root = root
-        self.nodes = list() # a pre-order enumeration of the nodes in the tree
-        self.lmds = list()  # left most descendents
+        self.nodes = list()  # a pre-order enumeration of the nodes in the tree
+        self.lmds = list()   # left most descendents
         self.keyroots = None
             # k and k' are nodes specified in the pre-order enumeration.
             # keyroots = {k | there exists no k'>k such that lmd(k) == lmd(k')}
@@ -89,6 +90,7 @@ class AnnotatedTree(object):
             i += 1
         self.keyroots = sorted(keyroots.values())
 
+
 def distance(A, B):
     A, B = AnnotatedTree(A), AnnotatedTree(B)
     treedists = zeros((len(A.nodes), len(B.nodes)), int)
@@ -101,7 +103,7 @@ def distance(A, B):
 
         m = i - Al[i] + 2
         n = j - Bl[j] + 2
-        fd = forestdist = zeros((m,n), int)
+        fd = zeros((m,n), int)
 
         ioff = Al[i] - 1
         joff = Bl[j] - 1
@@ -123,9 +125,9 @@ def distance(A, B):
                     #                   +-
                     fd[x][y] = min(
                         fd[x-1][y] + strdist(An[x+ioff].label, ''),
-                        fd[x][y-1] + strdist('', Bn[y+joff].label), 
+                        fd[x][y-1] + strdist('', Bn[y+joff].label),
                         fd[x-1][y-1] + strdist(An[x+ioff].label, Bn[y+joff].label)
-                    )                        
+                    )
                     treedists[x+ioff][y+joff] = fd[x][y]
                 else:
                     #                   +-
