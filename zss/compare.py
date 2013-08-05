@@ -4,8 +4,7 @@
 #Email: tim.tadh@hackthology.com, steve.johnson.public@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
-import sys, collections, itertools
-from test_tree import Node
+import collections
 
 try:
     import numpy as np
