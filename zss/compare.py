@@ -7,7 +7,15 @@
 import sys, collections, itertools
 from test_tree import Node
 
-import numpy as np
+try:
+    import numpy as np
+    zeros = np.zeros
+except ImportError:
+    def py_zeros(dim, pytype):
+        assert len(dim) == 2
+        return [[pytype() for y in xrange(dim[1])]
+                for x in xrange(dim[0])]
+    zeros = py_zeros
 
 try:
     from editdist import distance as strdist
@@ -84,7 +92,7 @@ class AnnotatedTree(object):
 
 def distance(A, B):
     A, B = AnnotatedTree(A), AnnotatedTree(B)
-    treedists = np.zeros((len(A.nodes), len(B.nodes)), int)
+    treedists = zeros((len(A.nodes), len(B.nodes)), int)
 
     def treedist(i, j):
         Al = A.lmds
@@ -94,8 +102,8 @@ def distance(A, B):
 
         m = i - Al[i] + 2
         n = j - Bl[j] + 2
-        fd = forestdist = np.zeros((m,n), int)
-        
+        fd = forestdist = zeros((m,n), int)
+
         ioff = Al[i] - 1
         joff = Bl[j] - 1
 
