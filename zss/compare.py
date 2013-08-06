@@ -103,11 +103,7 @@ def distance(A, B):
 
         m = i - Al[i] + 2
         n = j - Bl[j] + 2
-<<<<<<< HEAD
         fd = zeros((m,n), int)
-=======
-        fd = zeros((m, n), int)
->>>>>>> package-improvements
 
         ioff = Al[i] - 1
         joff = Bl[j] - 1
