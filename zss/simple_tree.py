@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #Author: Tim Henderson
-#Email: tim.tadh@hackthology.com
+#Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
 import collections
@@ -11,6 +11,14 @@ class Node(object):
     def __init__(self, label):
         self.label = label
         self.children = list()
+
+    @staticmethod
+    def get_children(node):
+        return node.children
+
+    @staticmethod
+    def get_label(node):
+        return node.label
 
     def addkid(self, node, before=False):
         if before:  self.children.insert(0, node)

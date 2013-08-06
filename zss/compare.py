@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #Authors: Tim Henderson and Steve Johnson
-#Email: tim.tadh@hackthology.com, steve.johnson.public@gmail.com
+#Email: tim.tadh@gmail.com, steve@steveasleep.com
 #For licensing see the LICENSE file in the top level directory.
 
 import collections
@@ -25,23 +25,12 @@ except ImportError:
         else:
             return 1
 
-
-def post_traverse(root):
-    stack = list()
-    pstack = list()
-    stack.append(root)
-    while len(stack) > 0:
-        n = stack.pop()
-        for c in n.children: stack.append(c)
-        pstack.append(n)
-    while len(pstack) > 0:
-        n = pstack.pop()
-        yield n
-
+from zss.simple_tree import Node
 
 class AnnotatedTree(object):
 
-    def __init__(self, root):
+    def __init__(self, root, get_children):
+        self.get_children = get_children
         def setid(n, _id):
             setattr(n, "_id", _id)
             return n
@@ -61,7 +50,7 @@ class AnnotatedTree(object):
         while len(stack) > 0:
             n, anc = stack.pop()
             setid(n, j)
-            for c in n.children:
+            for c in self.get_children(n):
                 a = collections.deque(anc)
                 a.appendleft(n._id)
                 stack.append((c, a))
@@ -75,7 +64,7 @@ class AnnotatedTree(object):
             #print list(anc)
             self.nodes.append(n)
             #print n.label, [a.label for a in anc]
-            if not n.children:
+            if not self.get_children(n):
                 lmd = i
                 for a in anc:
                     if a not in lmds: lmds[a] = i
@@ -91,8 +80,35 @@ class AnnotatedTree(object):
         self.keyroots = sorted(keyroots.values())
 
 
-def distance(A, B):
-    A, B = AnnotatedTree(A), AnnotatedTree(B)
+def distance(A, B, get_children=Node.get_children, get_label=Node.get_label,
+    label_dist=strdist):
+    '''Computes the exact tree edit distance between trees A and B.
+
+    :param A: The root of a tree.
+    :param B: The root of a tree.
+
+    :param get_children: A function(node) -> list(node), gets the children for a
+                         tree node. Defaults to `lambda node: node.children`.
+                         Eg. by default it expects each node to have a list of
+                         its children stored in `children`. This is over-ridable
+                         by passing a new function in here.
+
+    :param get_label: A function(node) -> object. A function which returns the
+                      label of the Node.  By default it is `lambda node: node.label`.
+
+    :param label_distance: A function(get_label(node1), get_label(node2) -> int >= 0.
+                           This function should take the output of
+                           `get_label(node)` and return an integer greater or
+                           equal to 0 representing how many edits to transform
+                           the label of `node1` into the label of `node2`. By
+                           default this is string edit distance (if available).
+                           0 represents the labels are the same. A number N
+                           represent it takes N changes to transform one label
+                           into another.
+
+    :return: An integer distance [0, inf+)
+    '''
+    A, B = AnnotatedTree(A, get_children), AnnotatedTree(B, get_children)
     treedists = zeros((len(A.nodes), len(B.nodes)), int)
 
     def treedist(i, j):
@@ -109,9 +125,9 @@ def distance(A, B):
         joff = Bl[j] - 1
 
         for x in xrange(1, m): # δ(l(i1)..i, θ) = δ(l(1i)..1-1, θ) + γ(v → λ)
-            fd[x][0] = fd[x-1][0] + strdist(An[x-1].label, '')
+            fd[x][0] = fd[x-1][0] + label_dist(get_label(An[x-1]), '')
         for y in xrange(1, n): # δ(θ, l(j1)..j) = δ(θ, l(j1)..j-1) + γ(λ → w)
-            fd[0][y] = fd[0][y-1] + strdist('', Bn[y-1].label)
+            fd[0][y] = fd[0][y-1] + label_dist('', get_label(Bn[y-1]))
 
         for x in xrange(1, m): ## the plus one is for the xrange impl
             for y in xrange(1, n):
@@ -124,9 +140,10 @@ def distance(A, B):
                     #                   | δ(l(i1)..i-1, l(j1)..j-1) + γ(v → w)
                     #                   +-
                     fd[x][y] = min(
-                        fd[x-1][y] + strdist(An[x+ioff].label, ''),
-                        fd[x][y-1] + strdist('', Bn[y+joff].label),
-                        fd[x-1][y-1] + strdist(An[x+ioff].label, Bn[y+joff].label)
+                        fd[x-1][y] + label_dist(get_label(An[x+ioff]), ''),
+                        fd[x][y-1] + label_dist('', get_label(Bn[y+joff])),
+                        fd[x-1][y-1] + label_dist(get_label(An[x+ioff]),
+                                                  get_label(Bn[y+joff]))
                     )
                     treedists[x+ioff][y+joff] = fd[x][y]
                 else:
@@ -140,8 +157,8 @@ def distance(A, B):
                     q = Bl[y+joff]-1-joff
                     #print (p, q), (len(fd), len(fd[0]))
                     fd[x][y] = min(
-                        fd[x-1][y] + strdist(An[x+ioff].label, ''),
-                        fd[x][y-1] + strdist('', Bn[y+joff].label),
+                        fd[x-1][y] + label_dist(get_label(An[x+ioff]), ''),
+                        fd[x][y-1] + label_dist('', get_label(Bn[y+joff])),
                         fd[p][q] + treedists[x+ioff][y+joff]
                     )
 
