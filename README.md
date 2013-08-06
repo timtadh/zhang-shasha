@@ -35,7 +35,7 @@ The tree is represented by objects referencing each other. Each node is
 represented by an object with at least the attributes `label` and `children`,
 where `label` is a string and `children` is a list of other objects.
 
-To find the distance between two object trees, call `compare.distance(root1,
+To find the distance between two object trees, call `zss.distance(root1,
 root2)`.
 
 The object format is used by the tests and is probably the easiest to work with.
@@ -48,7 +48,7 @@ The object format is used by the tests and is probably the easiest to work with.
     c = Node('c', [])
     b = Node('b', [])
     a = Node('a', [b, c])
-    assert compare.distance(a, a) == 0
+    assert zss.distance(a, a) == 0
 
 #### Another Example:
     from zss import distance, Node
