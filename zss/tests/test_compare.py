@@ -25,16 +25,6 @@ def simple_trees():
         )
     return A, B
 
-def test_post_traverse():
-    A, B = simple_trees()
-    assert (
-        [n.label for n in compare.post_traverse(A, A.get_children)] == ['a','b','c','d','e','f']
-    )
-    assert (
-        [n.label for n in compare.post_traverse(B, B.get_children)] == ['a','b','d','c','e','f']
-    )
-
-
 def test_nodes():
     A, B = [compare.AnnotatedTree(t, t.get_children) for t in simple_trees()]
     for i, n in enumerate(reversed(A.nodes)):

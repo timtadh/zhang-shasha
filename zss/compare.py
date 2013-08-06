@@ -25,20 +25,6 @@ except ImportError:
         else:
             return 1
 
-
-def post_traverse(root, get_children):
-    stack = list()
-    pstack = list()
-    stack.append(root)
-    while len(stack) > 0:
-        n = stack.pop()
-        for c in get_children(n): stack.append(c)
-        pstack.append(n)
-    while len(pstack) > 0:
-        n = pstack.pop()
-        yield n
-
-
 class AnnotatedTree(object):
 
     def __init__(self, root, get_children):
