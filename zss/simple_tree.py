@@ -12,6 +12,10 @@ class Node(object):
         self.label = label
         self.children = list()
 
+    @staticmethod
+    def get_children(node):
+        return node.children
+
     def addkid(self, node, before=False):
         if before:  self.children.insert(0, node)
         else:   self.children.append(node)

@@ -28,15 +28,15 @@ def simple_trees():
 def test_post_traverse():
     A, B = simple_trees()
     assert (
-        [n.label for n in compare.post_traverse(A)] == ['a','b','c','d','e','f']
+        [n.label for n in compare.post_traverse(A, A.get_children)] == ['a','b','c','d','e','f']
     )
     assert (
-        [n.label for n in compare.post_traverse(B)] == ['a','b','d','c','e','f']
+        [n.label for n in compare.post_traverse(B, B.get_children)] == ['a','b','d','c','e','f']
     )
 
 
 def test_nodes():
-    A, B = [compare.AnnotatedTree(t) for t in simple_trees()]
+    A, B = [compare.AnnotatedTree(t, t.get_children) for t in simple_trees()]
     for i, n in enumerate(reversed(A.nodes)):
         assert hasattr(n, '_id')
         assert n._id == i
@@ -45,7 +45,7 @@ def test_nodes():
         assert n._id == i
 
 def test_left_most_descendent():
-    A, B = [compare.AnnotatedTree(t) for t in simple_trees()]
+    A, B = [compare.AnnotatedTree(t, t.get_children) for t in simple_trees()]
     assert A.lmds[0] == 0
     assert A.lmds[1] == 1
     assert A.lmds[2] == 1
@@ -61,6 +61,6 @@ def test_left_most_descendent():
     assert B.lmds[5] == 0
 
 def test_keyroots():
-    A, B = [compare.AnnotatedTree(t) for t in simple_trees()]
+    A, B = [compare.AnnotatedTree(t, t.get_children) for t in simple_trees()]
     assert A.keyroots == [2, 4, 5]
     assert B.keyroots == [1, 4, 5]

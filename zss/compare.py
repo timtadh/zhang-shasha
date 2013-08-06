@@ -26,13 +26,13 @@ except ImportError:
             return 1
 
 
-def post_traverse(root):
+def post_traverse(root, get_children):
     stack = list()
     pstack = list()
     stack.append(root)
     while len(stack) > 0:
         n = stack.pop()
-        for c in n.children: stack.append(c)
+        for c in get_children(n): stack.append(c)
         pstack.append(n)
     while len(pstack) > 0:
         n = pstack.pop()
@@ -41,7 +41,8 @@ def post_traverse(root):
 
 class AnnotatedTree(object):
 
-    def __init__(self, root):
+    def __init__(self, root, get_children):
+        self.get_children = get_children
         def setid(n, _id):
             setattr(n, "_id", _id)
             return n
@@ -61,7 +62,7 @@ class AnnotatedTree(object):
         while len(stack) > 0:
             n, anc = stack.pop()
             setid(n, j)
-            for c in n.children:
+            for c in self.get_children(n):
                 a = collections.deque(anc)
                 a.appendleft(n._id)
                 stack.append((c, a))
@@ -75,7 +76,7 @@ class AnnotatedTree(object):
             #print list(anc)
             self.nodes.append(n)
             #print n.label, [a.label for a in anc]
-            if not n.children:
+            if not self.get_children(n):
                 lmd = i
                 for a in anc:
                     if a not in lmds: lmds[a] = i
@@ -91,8 +92,8 @@ class AnnotatedTree(object):
         self.keyroots = sorted(keyroots.values())
 
 
-def distance(A, B):
-    A, B = AnnotatedTree(A), AnnotatedTree(B)
+def distance(A, B, get_children=lambda node: node.children):
+    A, B = AnnotatedTree(A, get_children), AnnotatedTree(B, get_children)
     treedists = zeros((len(A.nodes), len(B.nodes)), int)
 
     def treedist(i, j):
