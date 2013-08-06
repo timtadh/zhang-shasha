@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #Authors: Tim Henderson and Steve Johnson
-#Email: tim.tadh@gmail.com, steve.johnson.public@gmail.com
+#Email: tim.tadh@gmail.com, steve@steveasleep.com
 #For licensing see the LICENSE file in the top level directory.
 
 import collections
