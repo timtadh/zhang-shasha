@@ -7,12 +7,23 @@ of utilities to make its use convenient.
 
 If you'd like to learn more about how it works, see :doc:`references`.
 
+Brought to you by Tim Henderson (tim.tadh@gmail.com) and Steve Johnson
+(steve@steveasleep.com).
+
 Installation
 ------------
 
-::
+You can get :py:mod:`zss` and its soft requirements (
+:py:mod:`editdist` and :py:mod:`numpy` >= 1.7) from PyPI::
 
     pip install zss
+
+If you'd prefer to install without those dependencies, you can get the source
+code and install via the command line::
+
+    python setup.py install
+
+If you want to build the docs, you'll need to install Sphinx >= 1.0.
 
 Usage
 -----
