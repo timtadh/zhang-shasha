@@ -31,6 +31,8 @@ tests) then also run:
 
     pip install -r requirements.txt
 
+If you want to build the docs, you'll need to `pip install sphinx`.
+
 
 Tree Format and Usage
 ---------------------
