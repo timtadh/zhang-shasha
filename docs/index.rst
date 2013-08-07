@@ -47,6 +47,8 @@ distance function::
         )
     assert distance(A, B) == 2
 
+:doc:`See more examples <examples>`
+
 Table of Contents
 -----------------
 
@@ -54,3 +56,4 @@ Table of Contents
    :maxdepth: 2
 
    usage
+   examples

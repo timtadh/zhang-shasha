@@ -22,9 +22,9 @@ class Node(object):
             .addkid(Node("e"))
     """
 
-    def __init__(self, label):
+    def __init__(self, label, children=None):
         self.label = label
-        self.children = list()
+        self.children = children or list()
 
     @staticmethod
     def get_children(node):
