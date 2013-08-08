@@ -67,8 +67,9 @@ See ``test_metricspace.py`` for more examples.
 Specifying Custom Tree Formats
 ------------------------------
 
-Specifying custom tree formats and distance metrics is easy. The `zss.distance`
-function takes 3 extra parameters besides the two tree to compare:
+Specifying custom tree formats and distance metrics is easy. The
+:py:func:`zss.distance` function takes 3 extra parameters besides the two tree
+to compare:
 
 1. ``get_children`` - a function to retrieve a list of children from a node.
 2. ``get_label`` - a function to retrieve the label object from a node.
