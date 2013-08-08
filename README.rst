@@ -1,5 +1,5 @@
 Zhang-Shasha: Tree edit distance in Python
-==========================================
+------------------------------------------
 
 The ``zss`` module provides a function (``zss.distance``) that
 computes the edit distance between the two given trees, as well as a small set
@@ -145,7 +145,7 @@ Example
 
 
 References
-==========
+----------
 
 The algorithm used by ``zss.distance`` is taken directly from the
 original paper by Zhang and Shasha. If you would like to discuss the paper, or
@@ -153,14 +153,14 @@ the the tree edit distance problem (we have implemented a few other algorithms
 as well) please email the authors.
 
 Another good implementation
----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A good Java implementation can be found on Dr. Nikolaus Augsten's site. It is
 called `approxlib <http://www.inf.unibz.it/~augsten/src/>`_ and it contains a
 number of useful tree distance algorithms.
 
 Papers
-------
+^^^^^^
 
 The original paper describing the algorithm:
 
