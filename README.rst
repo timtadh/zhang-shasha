@@ -47,7 +47,9 @@ To compare the distance between two trees, you need:
 4. Functions to let ``zss.distance`` traverse your tree.
 
 Here is an example using the library's built-in default node structure and edit
-distance function::
+distance function
+
+.. code-block:: python
 
     from zss import distance, Node
 
@@ -85,7 +87,7 @@ compare:
 Example
 ^^^^^^^
 
-::
+.. code-block:: python
 
     #!/usr/bin/env python
 
