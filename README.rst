@@ -21,8 +21,14 @@ You can get ``zss`` and its soft requirements (
 
     pip install zss
 
-If you'd prefer to install without those dependencies, you can get the source
-code and install via the command line::
+Both modules are optional. ``editdist`` uses string edit distance to
+compare node labels rather than a simple equal/not-equal check, and
+``numpy`` significantly speeds up the library. The only reason version
+1.7 of ``numpy`` is required is that earlier versions have trouble
+installing on current versions of Mac OS X.
+
+You can install ``zss`` from the source code without dependencies in the
+usual way::
 
     python setup.py install
 
