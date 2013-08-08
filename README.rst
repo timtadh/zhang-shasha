@@ -158,9 +158,9 @@ original paper by Zhang and Shasha. If you would like to discuss the paper, or
 the the tree edit distance problem (we have implemented a few other algorithms
 as well) please email the authors.
 
-`approxlib <http://www.inf.unibz.it/~augsten/src/>`_ contains a good Java
-implementation by Dr. Nikolaus Augsten. It contains a number of useful tree
-distance algorithms.
+`approxlib <http://www.inf.unibz.it/~augsten/src/>`_ by Dr. Nikolaus Augstent
+contains a good Java implementation of Zhang-Shasha as well as a number of
+other useful tree distance algorithms.
 
 `Kaizhong Zhang and Dennis Shasha. Simple fast algorithms for the editing distance between trees and related problems. SIAM Journal of Computing, 18:1245–1262, 1989.`__ (the original paper)
 
