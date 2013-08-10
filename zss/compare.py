@@ -87,24 +87,23 @@ def distance(A, B, get_children=Node.get_children, get_label=Node.get_label,
     :param A: The root of a tree.
     :param B: The root of a tree.
 
-    :param get_children: A function(node) -> list(node), gets the children for a
-                         tree node. Defaults to `lambda node: node.children`.
-                         Eg. by default it expects each node to have a list of
-                         its children stored in `children`. This is over-ridable
-                         by passing a new function in here.
+    :param get_children:
+        A function ``get_children(node) == [node children]``.  Defaults to
+        :py:func:`zss.Node.get_children`.
 
-    :param get_label: A function(node) -> object. A function which returns the
-                      label of the Node.  By default it is `lambda node: node.label`.
+    :param get_label:
+        A function ``get_label(node) == 'node label'``.All labels are assumed
+        to be strings at this time. Defaults to :py:func:`zss.Node.get_label`.
 
-    :param label_distance: A function(get_label(node1), get_label(node2) -> int >= 0.
-                           This function should take the output of
-                           `get_label(node)` and return an integer greater or
-                           equal to 0 representing how many edits to transform
-                           the label of `node1` into the label of `node2`. By
-                           default this is string edit distance (if available).
-                           0 represents the labels are the same. A number N
-                           represent it takes N changes to transform one label
-                           into another.
+    :param label_distance:
+        A function
+        ``label_distance((get_label(node1), get_label(node2)) >= 0``.
+        This function should take the output of ``get_label(node)`` and return
+        an integer greater or equal to 0 representing how many edits to
+        transform the label of ``node1`` into the label of ``node2``. By
+        default, this is string edit distance (if available). 0 indicates that
+        the labels are the same. A number N represent it takes N changes to
+        transform one label into the other.
 
     :return: An integer distance [0, inf+)
     '''

@@ -6,31 +6,60 @@
 
 import collections
 
-class Node(object):
 
-    def __init__(self, label):
+class Node(object):
+    """
+    A simple node object that can be used to construct trees to be used with
+    :py:func:`zss.distance`.
+
+    Example: ::
+
+        Node("f")
+            .addkid(Node("a")
+                .addkid(Node("h"))
+                .addkid(Node("c")
+                    .addkid(Node("l"))))
+            .addkid(Node("e"))
+    """
+
+    def __init__(self, label, children=None):
         self.label = label
-        self.children = list()
+        self.children = children or list()
 
     @staticmethod
     def get_children(node):
+        """
+        Default value of ``get_children`` argument of :py:func:`zss.distance`.
+
+        :returns: ``self.children``.
+        """
         return node.children
 
     @staticmethod
     def get_label(node):
+        """
+        Default value of ``get_label`` argument of :py:func:`zss.distance`.
+
+        :returns: ``self.label``.
+        """
         return node.label
 
     def addkid(self, node, before=False):
+        """
+        Add the given node as a child of this node.
+        """
         if before:  self.children.insert(0, node)
         else:   self.children.append(node)
         return self
 
     def get(self, label):
+        """:returns: Child with the given label."""
         if self.label == label: return self
         for c in self.children:
             if label in c: return c.get(label)
 
     def iter(self):
+        """Iterate over this node and its children in a preorder traversal."""
         queue = collections.deque()
         queue.append(self)
         while len(queue) > 0:
