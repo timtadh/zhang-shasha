@@ -51,7 +51,7 @@ distance function
 
 .. code-block:: python
 
-    from zss import distance, Node
+    from zss import simple_distance, Node
 
     A = (
         Node("f")
@@ -69,15 +69,15 @@ distance function
                     .addkid(Node("b"))))
             .addkid(Node("e"))
         )
-    assert distance(A, B) == 2
+    assert simple_distance(A, B) == 2
 
 
 Specifying Custom Tree Formats
 ------------------------------
 
 Specifying custom tree formats and distance metrics is easy. The
-``zss.distance`` function takes 3 extra parameters besides the two tree to
-compare:
+``zss.simple_distance`` function takes 3 extra parameters besides the two tree
+to compare:
 
 1. ``get_children`` - a function to retrieve a list of children from a node.
 2. ``get_label`` - a function to retrieve the label object from a node.
@@ -145,7 +145,7 @@ Example
         .addkid(WeirdNode("e"))
     )
 
-    dist = zss.distance(
+    dist = zss.simple_distance(
         A, B, WeirdNode.get_children, WeirdNode.get_label, weird_dist)
 
     print dist
@@ -155,10 +155,10 @@ Example
 References
 ----------
 
-The algorithm used by ``zss.distance`` is taken directly from the
-original paper by Zhang and Shasha. If you would like to discuss the paper, or
-the the tree edit distance problem (we have implemented a few other algorithms
-as well) please email the authors.
+The algorithm used by ``zss`` is taken directly from the original paper by
+Zhang and Shasha. If you would like to discuss the paper, or the the tree edit
+distance problem (we have implemented a few other algorithms as well) please
+email the authors.
 
 `approxlib <http://www.inf.unibz.it/~augsten/src/>`_ by Dr. Nikolaus Augstent
 contains a good Java implementation of Zhang-Shasha as well as a number of

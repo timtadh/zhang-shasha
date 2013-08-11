@@ -132,10 +132,10 @@ def distance(A, B, get_children, insert_cost, remove_cost, update_cost):
         :py:func:`zss.Node.get_children`.
 
     :param insert_cost:
-        A function ``insert_cost(node) == cost to insert node``.
+        A function ``insert_cost(node) == cost to insert node >= 0``.
 
     :param remove_cost:
-        A function ``remove_cost(node) == cost to remove node``.
+        A function ``remove_cost(node) == cost to remove node >= 0``.
 
     :param update_cost:
         A function ``update_cost(a, b) == cost to change a into b >= 0``.

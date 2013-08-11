@@ -1,10 +1,10 @@
 References
 ==========
 
-The algorithm used by :py:func:`zss.distance` is taken directly from the
-original paper by Zhang and Shasha. If you would like to discuss the paper, or
-the the tree edit distance problem (we have implemented a few other algorithms
-as well) please email the authors.
+The algorithm used by :py:mod:`zss` is taken directly from the original paper
+by Zhang and Shasha. If you would like to discuss the paper, or the the tree
+edit distance problem (we have implemented a few other algorithms as well)
+please email the authors.
 
 `approxlib <http://www.inf.unibz.it/~augsten/src/>`_ by Dr. Nikolaus Augstent
 contains a good Java implementation of Zhang-Shasha as well as a number of
