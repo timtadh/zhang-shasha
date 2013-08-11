@@ -4,7 +4,10 @@
 #Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
-from zss import compare
+from zss import (
+    distance,
+    simple_distance,
+)
 
 try:
     from editdist import distance as strdist
@@ -16,7 +19,7 @@ except ImportError:
             return 1
 
 def weird_dist(A, B):
-    return 10*strdist(A, B)
+    return 10 * strdist(A, B)
 
 class WeirdNode(object):
 
@@ -36,6 +39,7 @@ class WeirdNode(object):
         if before:  self.my_children.insert(0, node)
         else:   self.my_children.append(node)
         return self
+
 
 def test_paper_tree():
     Node = WeirdNode
@@ -62,7 +66,7 @@ def test_paper_tree():
     #print A
     #print
     #print B
-    dist = compare.distance(A,B,WeirdNode.get_children, WeirdNode.get_label,
+    dist = simple_distance(A, B, WeirdNode.get_children, WeirdNode.get_label,
         weird_dist)
     assert dist == 20
 

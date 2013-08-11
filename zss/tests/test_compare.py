@@ -4,7 +4,10 @@
 #Email: tim.tadh@gmail.com, steve@steveasleep.com
 #For licensing see the LICENSE file in the top level directory.
 
-from zss import compare, Node
+from zss import (
+    compare,
+    Node,
+)
 
 def simple_trees():
     A = (
