@@ -7,6 +7,7 @@
 from zss import (
     distance,
     simple_distance,
+    Node,
 )
 
 try:
@@ -71,3 +72,17 @@ def test_paper_tree():
     assert dist == 20
 
 
+def test_rich_api():
+    insert_cost = lambda node: 1
+    remove_cost = lambda node: 1
+
+    A = Node('a')
+    B = Node('b')
+    # prefer update
+    assert distance(
+        A, B, Node.get_children, insert_cost, remove_cost,
+        lambda a, b: 1) == 1
+    # prefer insert/remove
+    assert distance(
+        A, B, Node.get_children, insert_cost, remove_cost,
+        lambda a, b: 3) == 2
