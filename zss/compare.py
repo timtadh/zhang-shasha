@@ -27,10 +27,12 @@ except ImportError:
 
 from zss.simple_tree import Node
 
+
 class AnnotatedTree(object):
 
     def __init__(self, root, get_children):
         self.get_children = get_children
+
         def setid(n, _id):
             setattr(n, "_id", _id)
             return n
@@ -80,9 +82,11 @@ class AnnotatedTree(object):
         self.keyroots = sorted(keyroots.values())
 
 
-def distance(A, B, get_children=Node.get_children, get_label=Node.get_label,
-    label_dist=strdist):
-    '''Computes the exact tree edit distance between trees A and B.
+def simple_distance(A, B, get_children=Node.get_children,
+        get_label=Node.get_label, label_dist=strdist):
+    """Computes the exact tree edit distance between trees A and B. Provides a
+    simplified interface for use when insert/remove cost is equivalent to
+    updating a node from/to an empty label.
 
     :param A: The root of a tree.
     :param B: The root of a tree.
@@ -106,6 +110,37 @@ def distance(A, B, get_children=Node.get_children, get_label=Node.get_label,
         transform one label into the other.
 
     :return: An integer distance [0, inf+)
+    """
+    return distance(
+        A, B, get_children,
+        insert_cost=lambda node: label_dist('', get_label(node)),
+        remove_cost=lambda node: label_dist(get_label(node), ''),
+        update_cost=lambda a, b: label_dist(get_label(a), get_label(b)),
+    )
+
+
+def distance(A, B, get_children, insert_cost, remove_cost, update_cost):
+    '''Computes the exact tree edit distance between trees A and B. Use
+    :py:func:`zss.simple_distance` unless you need to define insert and removal
+    cost more explicitly.
+
+    :param A: The root of a tree.
+    :param B: The root of a tree.
+
+    :param get_children:
+        A function ``get_children(node) == [node children]``.  Defaults to
+        :py:func:`zss.Node.get_children`.
+
+    :param insert_cost:
+        A function ``insert_cost(node) == cost to insert node >= 0``.
+
+    :param remove_cost:
+        A function ``remove_cost(node) == cost to remove node >= 0``.
+
+    :param update_cost:
+        A function ``update_cost(a, b) == cost to change a into b >= 0``.
+
+    :return: An integer distance [0, inf+)
     '''
     A, B = AnnotatedTree(A, get_children), AnnotatedTree(B, get_children)
     treedists = zeros((len(A.nodes), len(B.nodes)), int)
@@ -124,9 +159,9 @@ def distance(A, B, get_children=Node.get_children, get_label=Node.get_label,
         joff = Bl[j] - 1
 
         for x in xrange(1, m): # δ(l(i1)..i, θ) = δ(l(1i)..1-1, θ) + γ(v → λ)
-            fd[x][0] = fd[x-1][0] + label_dist(get_label(An[x-1]), '')
+            fd[x][0] = fd[x-1][0] + remove_cost(An[x-1])
         for y in xrange(1, n): # δ(θ, l(j1)..j) = δ(θ, l(j1)..j-1) + γ(λ → w)
-            fd[0][y] = fd[0][y-1] + label_dist('', get_label(Bn[y-1]))
+            fd[0][y] = fd[0][y-1] + insert_cost(Bn[y-1])
 
         for x in xrange(1, m): ## the plus one is for the xrange impl
             for y in xrange(1, n):
@@ -139,10 +174,9 @@ def distance(A, B, get_children=Node.get_children, get_label=Node.get_label,
                     #                   | δ(l(i1)..i-1, l(j1)..j-1) + γ(v → w)
                     #                   +-
                     fd[x][y] = min(
-                        fd[x-1][y] + label_dist(get_label(An[x+ioff]), ''),
-                        fd[x][y-1] + label_dist('', get_label(Bn[y+joff])),
-                        fd[x-1][y-1] + label_dist(get_label(An[x+ioff]),
-                                                  get_label(Bn[y+joff]))
+                        fd[x-1][y] + remove_cost(An[x+ioff]),
+                        fd[x][y-1] + insert_cost(Bn[y+joff]),
+                        fd[x-1][y-1] + update_cost(An[x+ioff], Bn[y+joff]),
                     )
                     treedists[x+ioff][y+joff] = fd[x][y]
                 else:
@@ -156,8 +190,8 @@ def distance(A, B, get_children=Node.get_children, get_label=Node.get_label,
                     q = Bl[y+joff]-1-joff
                     #print (p, q), (len(fd), len(fd[0]))
                     fd[x][y] = min(
-                        fd[x-1][y] + label_dist(get_label(An[x+ioff]), ''),
-                        fd[x][y-1] + label_dist('', get_label(Bn[y+joff])),
+                        fd[x-1][y] + remove_cost(An[x+ioff]),
+                        fd[x][y-1] + insert_cost(Bn[y+joff]),
                         fd[p][q] + treedists[x+ioff][y+joff]
                     )
 

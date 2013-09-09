@@ -4,15 +4,24 @@
 #Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
-import unittest, os, sys, base64, itertools, random, time, copy
-import copy, collections
+import copy
+import itertools
+import os
+import sys
+import random
+import unittest
 from random import randint, seed, shuffle
 
-from zss import compare, Node
+from zss import (
+    simple_distance,
+    Node,
+)
+from zss.compare import strdist
 
 seed(os.urandom(15))
 
 N = 3
+
 
 def product(*args, **kwds):
     # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
@@ -23,8 +32,11 @@ def product(*args, **kwds):
         result = [x+[y] for x in result for y in pool]
     for prod in result:
         yield tuple(prod)
+
+
 if not hasattr(itertools, 'product'):
     setattr(itertools, 'product', product)
+
 
 tree1_nodes = ['a','b','c','d','e','f']
 def tree1():
@@ -37,6 +49,7 @@ def tree1():
             .addkid(Node("e"))
         )
 
+
 tree2_nodes = ['a','b','c','d','e','f']
 def tree2():
     return (
@@ -47,6 +60,7 @@ def tree2():
                     .addkid(Node("e"))))
             .addkid(Node("f"))
         )
+
 
 tree3_nodes = ['a','b','c','d','e','f']
 def tree3():
@@ -70,6 +84,7 @@ def tree4():
             .addkid(Node("e"))
         )
 
+
 def randtree(depth=2, alpha='abcdefghijklmnopqrstuvwxyz', repeat=2, width=2):
     labels = [''.join(x) for x in itertools.product(alpha, repeat=repeat)]
     shuffle(labels)
@@ -86,6 +101,7 @@ def randtree(depth=2, alpha='abcdefghijklmnopqrstuvwxyz', repeat=2, width=2):
         p = c
         c = list()
     return root
+
 
 class TestTestNode(unittest.TestCase):
 
@@ -121,12 +137,13 @@ class TestTestNode(unittest.TestCase):
         root = tree1()
         self.assertEqual(list(x.label for x in root.iter()), ['f','d','e','a','c','b'])
 
+
 class TestCompare(unittest.TestCase):
     def test_distance(self):
         trees = itertools.product([tree1(), tree2(), tree3(), tree4()], repeat=2)
         for a,b in trees:
-            ab = compare.distance(a,b)
-            ba = compare.distance(b,a)
+            ab = simple_distance(a,b)
+            ba = simple_distance(b,a)
             #print '-----------------------------'
             #print a
             #print '------'
@@ -138,9 +155,9 @@ class TestCompare(unittest.TestCase):
             #break
         trees = itertools.product([tree1(), tree2(), tree3(), tree4()], repeat=3)
         for a,b,c in trees:
-            ab = compare.distance(a,b)
-            bc = compare.distance(b,c)
-            ac = compare.distance(a,c)
+            ab = simple_distance(a,b)
+            bc = simple_distance(b,c)
+            ac = simple_distance(a,c)
             self.assertTrue(ac <= ab + bc)
             #break
 
@@ -150,8 +167,8 @@ class TestCompare(unittest.TestCase):
     def test_symmetry(self):
         trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), repeat=2)
         for a,b in trees:
-            ab = compare.distance(a,b)
-            ba = compare.distance(b,a)
+            ab = simple_distance(a,b)
+            ba = simple_distance(b,a)
             #print '-----------------------------'
             #print ab, ba
             self.assertEquals(ab, ba)
@@ -159,7 +176,7 @@ class TestCompare(unittest.TestCase):
     def test_nondegenercy(self):
         trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), repeat=2)
         for a,b in trees:
-            d = compare.distance(a,b)
+            d = simple_distance(a,b)
             #print '-----------------------------'
             #print d, a is b
             self.assertTrue((d == 0 and a is b) or a is not b)
@@ -168,9 +185,9 @@ class TestCompare(unittest.TestCase):
         trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), (randtree(5, repeat=3, width=2) for x in xrange(N)), (randtree(5, repeat=3, width=2) for x in xrange(N)))
         for a,b,c in trees:
             #print '--------------------------------'
-            ab = compare.distance(a,b)
-            bc = compare.distance(b,c)
-            ac = compare.distance(a,c)
+            ab = simple_distance(a,b)
+            bc = simple_distance(b,c)
+            ac = simple_distance(a,c)
             #print ab, bc, ac
             self.assertTrue(ac <= ab + bc)
 
@@ -182,7 +199,8 @@ class TestCompare(unittest.TestCase):
             node = random.choice([n for n in B.iter()])
             old_label = str(node.label)
             node.label = 'xty'
-            assert compare.distance(A, B) == compare.strdist(old_label, node.label)
+            assert simple_distance(A, B) == strdist(old_label, node.label)
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

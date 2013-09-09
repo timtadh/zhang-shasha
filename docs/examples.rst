@@ -11,7 +11,7 @@ objects. However, all of this is configurable by passing in functions. Here is
 how to use the default API:
 
 To find the distance between two object trees, call
-``zss.distance(root1, root2)``.
+``zss.simple_distance(root1, root2)``.
 
 The object format is used by the tests and is probably the easiest to work
 with.
@@ -21,7 +21,7 @@ A simple example
 
 ::
 
-    from zss import distance, Node
+    from zss import simple_distance, Node
 
     # Node(label, children)
     # a---> b
@@ -29,18 +29,18 @@ A simple example
     c = Node('c', [])
     b = Node('b', [])
     a = Node('a', [b, c])
-    assert distance(a, a) == 0
+    assert simple_distance(a, a) == 0
 
     # a---> c
     a2 = Node('a', [Node('c', [])])
-    assert distance(a, a2) == 1
+    assert simple_distance(a, a2) == 1
 
 Another Example:
 ^^^^^^^^^^^^^^^^
 
 ::
 
-    from zss import distance, Node
+    from zss import simple_distance, Node
 
     A = (
         Node("f")
@@ -58,7 +58,7 @@ Another Example:
                     .addkid(Node("b"))))
             .addkid(Node("e"))
         )
-    assert distance(A, B) == 2
+    assert simple_distance(A, B) == 2
 
 
 See ``test_metricspace.py`` for more examples.
@@ -68,8 +68,8 @@ Specifying Custom Tree Formats
 ------------------------------
 
 Specifying custom tree formats and distance metrics is easy. The
-:py:func:`zss.distance` function takes 3 extra parameters besides the two tree
-to compare:
+:py:func:`zss.simple_distance` function takes 3 extra parameters besides the
+two tree to compare:
 
 1. ``get_children`` - a function to retrieve a list of children from a node.
 2. ``get_label`` - a function to retrieve the label object from a node.
@@ -137,7 +137,7 @@ Example
         .addkid(WeirdNode("e"))
     )
 
-    dist = zss.distance(
+    dist = zss.simple_distance(
         A, B, WeirdNode.get_children, WeirdNode.get_label, weird_dist)
 
     print dist

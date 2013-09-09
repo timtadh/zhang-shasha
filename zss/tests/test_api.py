@@ -4,7 +4,11 @@
 #Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
-from zss import compare
+from zss import (
+    distance,
+    simple_distance,
+    Node,
+)
 
 try:
     from editdist import distance as strdist
@@ -16,7 +20,7 @@ except ImportError:
             return 1
 
 def weird_dist(A, B):
-    return 10*strdist(A, B)
+    return 10 * strdist(A, B)
 
 class WeirdNode(object):
 
@@ -36,6 +40,7 @@ class WeirdNode(object):
         if before:  self.my_children.insert(0, node)
         else:   self.my_children.append(node)
         return self
+
 
 def test_paper_tree():
     Node = WeirdNode
@@ -62,8 +67,35 @@ def test_paper_tree():
     #print A
     #print
     #print B
-    dist = compare.distance(A,B,WeirdNode.get_children, WeirdNode.get_label,
+    dist = simple_distance(A, B, WeirdNode.get_children, WeirdNode.get_label,
         weird_dist)
     assert dist == 20
 
 
+def test_rich_api():
+    insert_cost = lambda node: 1
+    remove_cost = lambda node: 1
+    small_update_cost = lambda a, b: 1
+    large_update_cost = lambda a, b: 3
+    no_insert_cost = lambda node: 0
+
+    A = Node('a')
+    B = Node('b')
+    # prefer update
+    assert distance(
+        A, B, Node.get_children, insert_cost, remove_cost,
+        small_update_cost) == 1
+    # prefer insert/remove
+    assert distance(
+        A, B, Node.get_children, insert_cost, remove_cost,
+        large_update_cost) == 2
+
+    C = Node('a', [Node('x')])
+    assert (
+        distance(
+            A, C, Node.get_children, insert_cost, remove_cost,
+            small_update_cost) >
+        distance(
+            A, C, Node.get_children, no_insert_cost, remove_cost,
+            small_update_cost)
+    )

@@ -4,18 +4,23 @@
 #Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
-import unittest, os, sys, base64, itertools, random, time, copy
-import copy, collections
-from random import randint, seed, shuffle
+import os
+from random import seed
 
-from zss import compare, Node
+from zss import (
+    simple_distance,
+    Node,
+)
+
 
 seed(os.urandom(15))
 
+
 def test_empty_tree_distance():
-    assert compare.distance(Node(''), Node('')) == 0
-    assert compare.distance(Node('a'), Node('')) == 1
-    assert compare.distance(Node(''), Node('b')) == 1
+    assert simple_distance(Node(''), Node('')) == 0
+    assert simple_distance(Node('a'), Node('')) == 1
+    assert simple_distance(Node(''), Node('b')) == 1
+
 
 def test_paper_tree():
     A = (
@@ -41,8 +46,9 @@ def test_paper_tree():
     #print A
     #print
     #print B
-    dist = compare.distance(A,B)
+    dist = simple_distance(A,B)
     assert dist == 2
+
 
 def test_simplelabelchange():
     A = (
@@ -61,10 +67,11 @@ def test_simplelabelchange():
                     .addkid(Node("b"))))
             .addkid(Node("e"))
         )
-    dist = compare.distance(A,B)
+    dist = simple_distance(A,B)
     print dist
     assert dist == 3
     #print 'distance', d
+
 
 def test_incorrect_behavior_regression():
     A = (
@@ -81,7 +88,6 @@ def test_incorrect_behavior_regression():
          .addkid(Node("y"))
        )
      )
-    dist = compare.distance(A, B)
+    dist = simple_distance(A, B)
     print dist
     assert dist == 2
-

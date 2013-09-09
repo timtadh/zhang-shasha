@@ -43,12 +43,12 @@ To compare the distance between two trees, you need:
 3. A node-node distance function. By default, :py:mod:`zss` compares the edit
    distance between the nodes' labels. :py:mod:`zss` currently only knows how
    to handle nodes with string labels.
-4. Functions to let :py:func:`zss.distance` traverse your tree.
+4. Functions to let :py:func:`zss.simple_distance` traverse your tree.
 
 Here is an example using the library's built-in default node structure and edit
 distance function::
 
-    from zss import distance, Node
+    from zss import simple_distance, Node
 
     A = (
         Node("f")
@@ -66,7 +66,7 @@ distance function::
                     .addkid(Node("b"))))
             .addkid(Node("e"))
         )
-    assert distance(A, B) == 2
+    assert simple_distance(A, B) == 2
 
 :doc:`See more examples <examples>`
 
