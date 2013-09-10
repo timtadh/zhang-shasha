@@ -9,7 +9,7 @@ from better import better_theme_path
 
 # -- General configuration ----------------------------------------------------
 
-#needs_sphinx = '1.0'
+needs_sphinx = '1.0'
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'subsections']
