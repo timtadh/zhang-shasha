@@ -34,7 +34,7 @@ If you want to build the docs, you'll need to install Sphinx >= 1.0.
 Usage
 -----
 
-:ref:`Complete yet short API <api>`
+:ref:`Jump to API <api>`
 
 To compare the distance between two trees, you need:
 
