@@ -5,3 +5,4 @@ from compare import (
 from simple_tree import Node
 
 __all__ = ['distance', 'simple_distance', 'Node']
+__version__ = '1.1'
