@@ -12,7 +12,7 @@ from better import better_theme_path
 #needs_sphinx = '1.0'
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 templates_path = ['_templates']
-exclude_patterns = ['_build']
+exclude_patterns = ['_build', 'subsections']
 source_suffix = '.rst'
 
 master_doc = 'index'
@@ -37,14 +37,16 @@ html_theme_options = {
 }
 html_theme_path = [better_theme_path]
 html_sidebars = {
-    '**': ['globaltoc.html'],
-    'index': ['globaltoc.html'],
+    'index': ['localtoc.html'],
 }
 
 html_title = "%(project)s v%(release)s" % {
     'project': project,
     'release': release,
 }
+
+# these are included in index.rst
+unused_docs = ['api.rst', 'examples.rst', 'references.rst']
 
 html_short_title = "Home"
 #html_logo = None

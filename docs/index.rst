@@ -5,7 +5,7 @@ The :py:mod:`zss` module provides a function (:py:func:`zss.distance`) that
 computes the edit distance between the two given trees, as well as a small set
 of utilities to make its use convenient.
 
-If you'd like to learn more about how it works, see :doc:`references`.
+If you'd like to learn more about how it works, see :ref:`references`.
 
 Brought to you by Tim Henderson (tim.tadh@gmail.com) and Steve Johnson
 (steve@steveasleep.com).
@@ -34,7 +34,7 @@ If you want to build the docs, you'll need to install Sphinx >= 1.0.
 Usage
 -----
 
-:doc:`Complete yet short API <usage>`
+:ref:`Complete yet short API <api>`
 
 To compare the distance between two trees, you need:
 
@@ -68,14 +68,13 @@ distance function::
         )
     assert simple_distance(A, B) == 2
 
-:doc:`See more examples <examples>`
+:ref:`See more examples <examples>`
 
-Table of Contents
------------------
+.. _api:
+.. include:: subsections/api.rst
 
-.. toctree::
-   :maxdepth: 2
+.. _examples:
+.. include:: subsections/examples.rst
 
-   usage
-   examples
-   references
+.. _references:
+.. include:: subsections/references.rst

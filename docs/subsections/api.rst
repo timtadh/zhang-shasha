@@ -1,5 +1,5 @@
-Usage
-=====
+API
+===
 
 .. automodule:: zss
 
