@@ -84,9 +84,16 @@ class AnnotatedTree(object):
 
 def simple_distance(A, B, get_children=Node.get_children,
         get_label=Node.get_label, label_dist=strdist):
-    """Computes the exact tree edit distance between trees A and B. Provides a
-    simplified interface for use when insert/remove cost is equivalent to
-    updating a node from/to an empty label.
+    """Computes the exact tree edit distance between trees A and B.
+
+    Use this function if both of these things are true:
+
+    * The cost to insert a node is equivalent to the cost of changing an empty
+      node to have the new node's label
+    * The cost to remove a node is equivalent to the cost of changing it to a
+      node with an empty label
+
+    Otherwise, use :py:func:`zss.distance` instead.
 
     :param A: The root of a tree.
     :param B: The root of a tree.
@@ -120,9 +127,17 @@ def simple_distance(A, B, get_children=Node.get_children,
 
 
 def distance(A, B, get_children, insert_cost, remove_cost, update_cost):
-    '''Computes the exact tree edit distance between trees A and B. Use
-    :py:func:`zss.simple_distance` unless you need to define insert and removal
-    cost more explicitly.
+    '''Computes the exact tree edit distance between trees A and B with a
+    richer API than :py:func:`zss.simple_distance`.
+
+    Use this function if either of these things are true:
+
+    * The cost to insert a node is **not** equivalent to the cost of changing
+      an empty node to have the new node's label
+    * The cost to remove a node is **not** equivalent to the cost of changing
+      it to a node with an empty label
+
+    Otherwise, use :py:func:`zss.simple_distance`.
 
     :param A: The root of a tree.
     :param B: The root of a tree.
