@@ -88,10 +88,8 @@ def simple_distance(A, B, get_children=Node.get_children,
 
     Use this function if both of these things are true:
 
-    * The cost to insert a node is equivalent to the cost of changing an empty
-      node to have the new node's label
-    * The cost to remove a node is equivalent to the cost of changing it to a
-      node with an empty label
+    * The cost to insert a node is equivalent to ``label_dist('', new_label)``
+    * The cost to remove a node is equivalent to ``label_dist(new_label, '')``
 
     Otherwise, use :py:func:`zss.distance` instead.
 
