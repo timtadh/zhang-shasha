@@ -11,7 +11,7 @@ Brought to you by Tim Henderson (tim.tadh@gmail.com)
 and Steve Johnson (steve@steveasleep.com).
 
 `Read the full documentation for more information.
-<http://pythonhosted.org/zhang-shasha/>`_
+<http://zhang-shasha.readthedocs.org/en/latest/>`_
 
 Installation
 ------------
