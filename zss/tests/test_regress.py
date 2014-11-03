@@ -103,7 +103,6 @@ def test_dict():
                 'name': 'child 2'  
             }
             ]}
-            
     B = {
         'name': 'tree', 
         'children': [
@@ -114,9 +113,12 @@ def test_dict():
                 'name': 'child Z'  
             }
             ]}
-    distance = zss.simple_distance(data1, data2,
-    get_children=lambda x: x['children'] if 'children' in x else [],
-    get_label=lambda x: x['name'],
-    label_dist=lambda x,y: 1 if x!=y else 0)
-    
+    dist = simple_distance(
+        A,
+        B,
+        get_children=lambda x: x['children'] if 'children' in x else [],
+        get_label=lambda x: x['name'],
+        label_dist=lambda x,y: 1 if x!=y else 0
+    )
     assert dist == 1
+
