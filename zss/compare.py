@@ -33,12 +33,9 @@ class AnnotatedTree(object):
     def __init__(self, root, get_children):
         self.get_children = get_children
 
-        def setid(n, _id):
-            setattr(n, "_id", _id)
-            return n
-
         self.root = root
         self.nodes = list()  # a pre-order enumeration of the nodes in the tree
+        self.ids = list()    # a matching list of ids
         self.lmds = list()   # left most descendents
         self.keyroots = None
             # k and k' are nodes specified in the pre-order enumeration.
@@ -51,20 +48,21 @@ class AnnotatedTree(object):
         j = 0
         while len(stack) > 0:
             n, anc = stack.pop()
-            setid(n, j)
+            nid = j
             for c in self.get_children(n):
                 a = collections.deque(anc)
-                a.appendleft(n._id)
+                a.appendleft(nid)
                 stack.append((c, a))
-            pstack.append((n, anc))
+            pstack.append(((n, nid), anc))
             j += 1
         lmds = dict()
         keyroots = dict()
         i = 0
         while len(pstack) > 0:
-            n, anc = pstack.pop()
+            (n, nid), anc = pstack.pop()
             #print list(anc)
             self.nodes.append(n)
+            self.ids.append(nid)
             #print n.label, [a.label for a in anc]
             if not self.get_children(n):
                 lmd = i
@@ -72,7 +70,7 @@ class AnnotatedTree(object):
                     if a not in lmds: lmds[a] = i
                     else: break
             else:
-                try: lmd = lmds[n._id]
+                try: lmd = lmds[nid]
                 except:
                     import pdb
                     pdb.set_trace()

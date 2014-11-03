@@ -30,12 +30,10 @@ def simple_trees():
 
 def test_nodes():
     A, B = [compare.AnnotatedTree(t, t.get_children) for t in simple_trees()]
-    for i, n in enumerate(reversed(A.nodes)):
-        assert hasattr(n, '_id')
-        assert n._id == i
-    for i, n in enumerate(reversed(B.nodes)):
-        assert hasattr(n, '_id')
-        assert n._id == i
+    for i, nid in enumerate(reversed(A.ids)):
+        assert nid == i
+    for i, nid in enumerate(reversed(B.ids)):
+        assert nid == i
 
 def test_left_most_descendent():
     A, B = [compare.AnnotatedTree(t, t.get_children) for t in simple_trees()]
