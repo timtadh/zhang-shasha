@@ -170,9 +170,9 @@ def distance(A, B, get_children, insert_cost, remove_cost, update_cost):
         joff = Bl[j] - 1
 
         for x in xrange(1, m): # δ(l(i1)..i, θ) = δ(l(1i)..1-1, θ) + γ(v → λ)
-            fd[x][0] = fd[x-1][0] + remove_cost(An[x-1])
+            fd[x][0] = fd[x-1][0] + remove_cost(An[x+ioff])
         for y in xrange(1, n): # δ(θ, l(j1)..j) = δ(θ, l(j1)..j-1) + γ(λ → w)
-            fd[0][y] = fd[0][y-1] + insert_cost(Bn[y-1])
+            fd[0][y] = fd[0][y-1] + insert_cost(Bn[y+joff])
 
         for x in xrange(1, m): ## the plus one is for the xrange impl
             for y in xrange(1, n):

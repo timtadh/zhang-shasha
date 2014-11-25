@@ -7,8 +7,10 @@
 import os
 from random import seed
 
-from zss import (
+from zss.compare import (
     simple_distance,
+    distance,
+    strdist,
     Node,
 )
 
@@ -121,4 +123,31 @@ def test_dict():
         label_dist=lambda x,y: 1 if x!=y else 0
     )
     assert dist == 1
+
+def test_wrong_index_regression():
+    A = Node('r')
+    B = (
+        Node("a")
+          .addkid(Node("b")
+            .addkid(Node("c"))
+            .addkid(Node("d"))
+          )
+          .addkid(Node("e")
+            .addkid(Node("f"))
+            .addkid(Node("g"))
+          )
+     )
+    def insert(n):
+        return ord(n.label[0])
+    def remove(n):
+        return ord(n.label[0])
+    def update(a,b):
+        return 10000*strdist(a.label, b.label)
+    dist = distance(A, B,
+        get_children=(lambda n: n.children),
+        insert_cost=insert,
+        remove_cost=remove,
+        update_cost=update,
+    )
+    assert dist == 814
 
