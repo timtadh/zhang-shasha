@@ -70,7 +70,7 @@ def test_simplelabelchange():
             .addkid(Node("e"))
         )
     dist = simple_distance(A,B)
-    print dist
+    print(dist)
     assert dist == 3
     #print 'distance', d
 
@@ -91,7 +91,7 @@ def test_incorrect_behavior_regression():
        )
      )
     dist = simple_distance(A, B)
-    print dist
+    print(dist)
     assert dist == 2
 
 def test_dict():

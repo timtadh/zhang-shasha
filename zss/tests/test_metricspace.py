@@ -26,7 +26,7 @@ N = 3
 def product(*args, **kwds):
     # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
     # product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
-    pools = map(tuple, args) * kwds.get('repeat', 1)
+    pools = list(map(tuple, args)) * kwds.get('repeat', 1)
     result = [[]]
     for pool in pools:
         result = [x+[y] for x in result for y in pool]
@@ -92,10 +92,10 @@ def randtree(depth=2, alpha='abcdefghijklmnopqrstuvwxyz', repeat=2, width=2):
     root = Node("root")
     p = [root]
     c = list()
-    for x in xrange(depth-1):
+    for x in range(depth-1):
         for y in p:
-            for z in xrange(randint(1,1+width)):
-                n = Node(labels.next())
+            for z in range(randint(1,1+width)):
+                n = Node(next(labels))
                 y.addkid(n)
                 c.append(n)
         p = c
@@ -117,21 +117,21 @@ class TestTestNode(unittest.TestCase):
 
     def test_get(self):
         root = tree1()
-        self.assertEquals(root.get("a").label, "a")
-        self.assertEquals(root.get("b").label, "b")
-        self.assertEquals(root.get("c").label, "c")
-        self.assertEquals(root.get("d").label, "d")
-        self.assertEquals(root.get("e").label, "e")
-        self.assertEquals(root.get("f").label, "f")
+        self.assertEqual(root.get("a").label, "a")
+        self.assertEqual(root.get("b").label, "b")
+        self.assertEqual(root.get("c").label, "c")
+        self.assertEqual(root.get("d").label, "d")
+        self.assertEqual(root.get("e").label, "e")
+        self.assertEqual(root.get("f").label, "f")
 
-        self.assertNotEquals(root.get("a").label, "x")
-        self.assertNotEquals(root.get("b").label, "x")
-        self.assertNotEquals(root.get("c").label, "x")
-        self.assertNotEquals(root.get("d").label, "x")
-        self.assertNotEquals(root.get("e").label, "x")
-        self.assertNotEquals(root.get("f").label, "x")
+        self.assertNotEqual(root.get("a").label, "x")
+        self.assertNotEqual(root.get("b").label, "x")
+        self.assertNotEqual(root.get("c").label, "x")
+        self.assertNotEqual(root.get("d").label, "x")
+        self.assertNotEqual(root.get("e").label, "x")
+        self.assertNotEqual(root.get("f").label, "x")
 
-        self.assertEquals(root.get("x"), None)
+        self.assertEqual(root.get("x"), None)
 
     def test_iter(self):
         root = tree1()
@@ -150,7 +150,7 @@ class TestCompare(unittest.TestCase):
             #print b
             #print '------'
             #print ab, ba
-            self.assertEquals(ab,ba)
+            self.assertEqual(ab,ba)
             self.assertTrue((ab == 0 and a is b) or a is not b)
             #break
         trees = itertools.product([tree1(), tree2(), tree3(), tree4()], repeat=3)
@@ -165,16 +165,16 @@ class TestCompare(unittest.TestCase):
         #print randtree(5, repeat=3, width=2)
 
     def test_symmetry(self):
-        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), repeat=2)
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in range(N)), repeat=2)
         for a,b in trees:
             ab = simple_distance(a,b)
             ba = simple_distance(b,a)
             #print '-----------------------------'
             #print ab, ba
-            self.assertEquals(ab, ba)
+            self.assertEqual(ab, ba)
 
     def test_nondegenercy(self):
-        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), repeat=2)
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in range(N)), repeat=2)
         for a,b in trees:
             d = simple_distance(a,b)
             #print '-----------------------------'
@@ -182,7 +182,7 @@ class TestCompare(unittest.TestCase):
             self.assertTrue((d == 0 and a is b) or a is not b)
 
     def test_triangle_inequality(self):
-        trees = itertools.product((randtree(5, repeat=3, width=2) for x in xrange(N)), (randtree(5, repeat=3, width=2) for x in xrange(N)), (randtree(5, repeat=3, width=2) for x in xrange(N)))
+        trees = itertools.product((randtree(5, repeat=3, width=2) for x in range(N)), (randtree(5, repeat=3, width=2) for x in range(N)), (randtree(5, repeat=3, width=2) for x in range(N)))
         for a,b,c in trees:
             #print '--------------------------------'
             ab = simple_distance(a,b)
@@ -194,7 +194,7 @@ class TestCompare(unittest.TestCase):
 
     def test_labelchange(self):
 
-        for A in (randtree(5, repeat=3, width=2) for x in xrange(N*4)):
+        for A in (randtree(5, repeat=3, width=2) for x in range(N*4)):
             B = copy.deepcopy(A)
             node = random.choice([n for n in B.iter()])
             old_label = str(node.label)

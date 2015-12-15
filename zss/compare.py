@@ -12,8 +12,8 @@ try:
 except ImportError:
     def py_zeros(dim, pytype):
         assert len(dim) == 2
-        return [[pytype() for y in xrange(dim[1])]
-                for x in xrange(dim[0])]
+        return [[pytype() for y in range(dim[1])]
+                for x in range(dim[0])]
     zeros = py_zeros
 
 try:
@@ -169,13 +169,13 @@ def distance(A, B, get_children, insert_cost, remove_cost, update_cost):
         ioff = Al[i] - 1
         joff = Bl[j] - 1
 
-        for x in xrange(1, m): # δ(l(i1)..i, θ) = δ(l(1i)..1-1, θ) + γ(v → λ)
+        for x in range(1, m): # δ(l(i1)..i, θ) = δ(l(1i)..1-1, θ) + γ(v → λ)
             fd[x][0] = fd[x-1][0] + remove_cost(An[x+ioff])
-        for y in xrange(1, n): # δ(θ, l(j1)..j) = δ(θ, l(j1)..j-1) + γ(λ → w)
+        for y in range(1, n): # δ(θ, l(j1)..j) = δ(θ, l(j1)..j-1) + γ(λ → w)
             fd[0][y] = fd[0][y-1] + insert_cost(Bn[y+joff])
 
-        for x in xrange(1, m): ## the plus one is for the xrange impl
-            for y in xrange(1, n):
+        for x in range(1, m): ## the plus one is for the xrange impl
+            for y in range(1, n):
                 # only need to check if x is an ancestor of i
                 # and y is an ancestor of j
                 if Al[i] == Al[x+ioff] and Bl[j] == Bl[y+joff]:
