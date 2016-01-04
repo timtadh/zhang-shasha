@@ -4,6 +4,10 @@
 #Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
+from __future__ import absolute_import
+from six.moves import map
+from six.moves import range
+
 import copy
 import itertools
 import os

@@ -4,6 +4,8 @@
 #Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
+from __future__ import absolute_import
+
 import collections
 
 

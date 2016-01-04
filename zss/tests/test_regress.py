@@ -4,6 +4,9 @@
 #Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
+from __future__ import absolute_import
+from __future__ import print_function
+
 import os
 from random import seed
 
