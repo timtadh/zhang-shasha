@@ -9,5 +9,5 @@ setup(name='zss',
       author_email='tim.tadh@gmail.com',
       url='https://www.github.com/timtadh/zss',
       packages=['zss'],
-      requires=['editdist', 'numpy']
+      requires=['editdist', 'numpy', 'six']
 )
