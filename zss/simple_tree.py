@@ -4,6 +4,8 @@
 #Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
+from __future__ import absolute_import
+
 import collections
 
 
@@ -72,12 +74,12 @@ class Node(object):
         elif not isinstance(b, str) and self.label == b.label: return 1
         elif (isinstance(b, str) and self.label != b) or self.label != b.label:
             return sum(b in c for c in self.children)
-        raise TypeError, "Object %s is not of type str or Node" % repr(b)
+        raise TypeError("Object %s is not of type str or Node" % repr(b))
 
     def __eq__(self, b):
         if b is None: return False
         if not isinstance(b, Node):
-            raise TypeError, "Must compare against type Node"
+            raise TypeError("Must compare against type Node")
         return self.label == b.label
 
     def __ne__(self, b):

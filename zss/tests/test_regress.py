@@ -4,6 +4,9 @@
 #Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
+from __future__ import absolute_import
+from __future__ import print_function
+
 import os
 from random import seed
 
@@ -70,7 +73,7 @@ def test_simplelabelchange():
             .addkid(Node("e"))
         )
     dist = simple_distance(A,B)
-    print dist
+    print(dist)
     assert dist == 3
     #print 'distance', d
 
@@ -91,7 +94,7 @@ def test_incorrect_behavior_regression():
        )
      )
     dist = simple_distance(A, B)
-    print dist
+    print(dist)
     assert dist == 2
 
 def test_dict():

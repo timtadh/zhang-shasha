@@ -4,11 +4,14 @@
 #Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
+from __future__ import absolute_import
+
 from zss import (
     distance,
     simple_distance,
     Node,
 )
+
 
 try:
     from editdist import distance as strdist
