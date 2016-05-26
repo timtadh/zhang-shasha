@@ -1,9 +1,7 @@
 from distutils.core import setup
 
-import zss
-
 setup(name='zss',
-      version=zss.__version__,
+      version='1.1.4',
       description='Tree edit distance using the Zhang Shasha algorithm',
       author='Tim Henderson',
       author_email='tim.tadh@gmail.com',
