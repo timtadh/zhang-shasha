@@ -37,11 +37,11 @@ class AnnotatedTree(object):
         self.get_children = get_children
 
         self.root = root
-        self.nodes = list()  # a pre-order enumeration of the nodes in the tree
+        self.nodes = list()  # a post-order enumeration of the nodes in the tree
         self.ids = list()    # a matching list of ids
         self.lmds = list()   # left most descendents
         self.keyroots = None
-            # k and k' are nodes specified in the pre-order enumeration.
+            # k and k' are nodes specified in the post-order enumeration.
             # keyroots = {k | there exists no k'>k such that lmd(k) == lmd(k')}
             # see paper for more on keyroots
 
