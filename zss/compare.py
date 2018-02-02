@@ -22,11 +22,14 @@ except ImportError:
 try:
     from editdist import distance as strdist
 except ImportError:
-    def strdist(a, b):
-        if a == b:
-            return 0
-        else:
-            return 1
+    try:
+        from editdistance import eval as strdist
+    except ImportError:
+        def strdist(a, b):
+            if a == b:
+                return 0
+            else:
+                return 1
 
 from zss.simple_tree import Node
 

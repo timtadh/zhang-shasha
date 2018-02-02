@@ -8,5 +8,5 @@ setup(name='zss',
       url='https://www.github.com/timtadh/zss',
       packages=['zss'],
       install_requires=['six'],
-      requires=['editdist', 'numpy', 'six'],
+      requires=['editdistance', 'numpy', 'six'],
 )
