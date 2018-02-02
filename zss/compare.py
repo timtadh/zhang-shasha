@@ -113,7 +113,7 @@ MATCH = Operation.match
 
 
 def simple_distance(A, B, get_children=Node.get_children,
-        get_label=Node.get_label, label_dist=strdist):
+        get_label=Node.get_label, label_dist=strdist, return_operations=False):
     """Computes the exact tree edit distance between trees A and B.
 
     Use this function if both of these things are true:
@@ -134,7 +134,7 @@ def simple_distance(A, B, get_children=Node.get_children,
         A function ``get_label(node) == 'node label'``.All labels are assumed
         to be strings at this time. Defaults to :py:func:`zss.Node.get_label`.
 
-    :param label_distance:
+    :param label_dist:
         A function
         ``label_distance((get_label(node1), get_label(node2)) >= 0``.
         This function should take the output of ``get_label(node)`` and return
@@ -144,18 +144,21 @@ def simple_distance(A, B, get_children=Node.get_children,
         the labels are the same. A number N represent it takes N changes to
         transform one label into the other.
 
+    :param return_operations: if True, return a tuple (cost, operations)
+        where operations is a list of the operations to transform A into B.
+
     :return: An integer distance [0, inf+)
     """
     return distance(
         A, B, get_children,
         insert_cost=lambda node: label_dist('', get_label(node)),
         remove_cost=lambda node: label_dist(get_label(node), ''),
-        update_cost=lambda a, b: label_dist(get_label(a), get_label(b)),
-        get_label=get_label
+        update_cost=lambda a, b: label_dist(get_label(a), get_label(b))
     )
 
 
-def distance(A, B, get_children, insert_cost, remove_cost, update_cost):
+def distance(A, B, get_children, insert_cost, remove_cost, update_cost,
+             return_operations=False):
     '''Computes the exact tree edit distance between trees A and B with a
     richer API than :py:func:`zss.simple_distance`.
 
@@ -183,6 +186,9 @@ def distance(A, B, get_children, insert_cost, remove_cost, update_cost):
 
     :param update_cost:
         A function ``update_cost(a, b) == cost to change a into b >= 0``.
+
+    :param return_operations: if True, return a tuple (cost, operations)
+        where operations is a list of the operations to transform A into B.
 
     :return: An integer distance [0, inf+)
     '''
@@ -276,4 +282,7 @@ def distance(A, B, get_children, insert_cost, remove_cost, update_cost):
         for j in B.keyroots:
             treedist(i, j)
 
-    return treedists[-1][-1], operations[-1][-1]
+    if return_operations:
+        return treedists[-1][-1], operations[-1][-1]
+    else:
+        return treedists[-1][-1]
