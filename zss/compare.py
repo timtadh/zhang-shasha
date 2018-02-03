@@ -105,6 +105,13 @@ class Operation(object):
         else:
             return '<Operation Match>'
 
+    def __eq__(self, other):
+        if other is None: return False
+        if not isinstance(other, Operation):
+            raise TypeError("Must compare against type Operation")
+        return self.type == other.type and self.arg1 == other.arg1 and \
+            self.arg2 == other.arg2
+
 
 REMOVE = Operation.remove
 INSERT = Operation.insert
