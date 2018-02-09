@@ -7,8 +7,7 @@ of utilities to make its use convenient.
 
 If you'd like to learn more about how it works, see References below.
 
-Brought to you by Tim Henderson (tim.tadh@gmail.com)
-and Steve Johnson (steve@steveasleep.com).
+Brought to you by Tim Henderson (tim.tadh@gmail.com).
 
 `Read the full documentation for more information.
 <http://zhang-shasha.readthedocs.org/en/latest/>`_
