@@ -6,3 +6,5 @@ env
 .swork.activate
 env3
 MANIFEST
+zss.egg-info
+.tox
