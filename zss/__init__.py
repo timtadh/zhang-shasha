@@ -8,4 +8,4 @@ from .compare import AnnotatedTree, Operation
 from .simple_tree import Node
 
 __all__ = ['distance', 'simple_distance', 'Node', 'AnnotatedTree', 'Operation']
-__version__ = '1.1.4'
+__version__ = '1.2.0'
