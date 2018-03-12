@@ -1,6 +1,9 @@
 Zhang-Shasha: Tree edit distance in Python
 ------------------------------------------
 
+.. image:: https://travis-ci.org/timtadh/zhang-shasha.svg?branch=master
+    :target: https://travis-ci.org/timtadh/zhang-shasha
+
 The ``zss`` module provides a function (``zss.distance``) that
 computes the edit distance between the two given trees, as well as a small set
 of utilities to make its use convenient.
