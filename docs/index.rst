@@ -7,8 +7,7 @@ of utilities to make its use convenient.
 
 If you'd like to learn more about how it works, see :ref:`references`.
 
-Brought to you by Tim Henderson (tim.tadh@gmail.com) and Steve Johnson
-(steve@steveasleep.com).
+Brought to you by Tim Henderson (tim.tadh@gmail.com).
 
 Get the source or report issues `on Github
 <https://github.com/timtadh/zhang-shasha/>`_.
