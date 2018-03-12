@@ -7,3 +7,4 @@ env
 env3
 MANIFEST
 zss.egg-info
+.tox
