@@ -154,3 +154,13 @@ def test_wrong_index_regression():
     )
     assert dist == 814
 
+def test_wrong_removal():
+    A = (
+        Node('a')
+          .addkid(Node('b'))
+          .addkid(Node('c'))
+    )
+    B = Node("a")
+    dist = simple_distance(A, B)
+    assert dist == 2
+

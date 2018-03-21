@@ -8,3 +8,4 @@ env3
 MANIFEST
 zss.egg-info
 .tox
+.pytest_cache
