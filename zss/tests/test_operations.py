@@ -32,7 +32,12 @@ C = (
                         .addkid(Node("e"))))
         .addkid(Node("f"))
 )
-
+D = (
+    Node("a")
+        .addkid(Node("b"))
+        .addkid(Node("c"))
+)
+E = Node("a")
 
 def all_equal(list1, list2):
     if len(list1) != len(list2):
@@ -79,4 +84,11 @@ def test_bc():
                     Operation(Operation.update, Node("e"), Node("f")),
                     Operation(Operation.update, Node("f"), Node("a"))]
     cost, ops = simple_distance(B, C, return_operations=True)
+    assert ops == expected_ops
+
+def test_de():
+    expected_ops = [Operation(Operation.remove, Node("b"), None),
+                    Operation(Operation.remove, Node("c"), None),
+                    Operation(Operation.match, Node("a"), Node("a"))]
+    cost, ops = simple_distance(D, E, return_operations=True)
     assert ops == expected_ops
