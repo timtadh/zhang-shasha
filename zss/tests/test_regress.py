@@ -48,11 +48,13 @@ def test_paper_tree():
         )
         .addkid(Node("e"))
     )
-    #print A
-    #print
-    #print B
-    dist = simple_distance(A,B)
+    # print A
+    # print
+    # print B
+    dist = simple_distance(A, B)
+    sub_dist = A - B
     assert dist == 2
+    assert dist == sub_dist
 
 
 def test_simplelabelchange():
@@ -95,7 +97,10 @@ def test_incorrect_behavior_regression():
      )
     dist = simple_distance(A, B)
     print(dist)
+    sub_dist = A - B
     assert dist == 2
+    assert dist == sub_dist
+
 
 def test_dict():
     A = {

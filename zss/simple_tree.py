@@ -8,6 +8,8 @@ from __future__ import absolute_import
 
 import collections
 
+import zss
+
 
 class Node(object):
     """
@@ -92,3 +94,6 @@ class Node(object):
         s = "%d:%s" % (len(self.children), self.label)
         s = '\n'.join([s]+[str(c) for c in self.children])
         return s
+
+    def __sub__(self, other):
+        return zss.simple_distance(self, other)
