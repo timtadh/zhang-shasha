@@ -99,14 +99,24 @@ class Operation(object):
         self.arg2 = arg2
 
     def __repr__(self):
-        if self.type == self.remove:
-            return '<Operation Remove: ' + self.arg1.label + '>'
-        elif self.type == self.insert:
-            return '<Operation Insert: ' + self.arg2.label + '>'
-        elif self.type == self.update:
-            return '<Operation Update: ' + self.arg1.label + ' to ' + self.arg2.label + '>'
+        if hasattr(self.arg1, "label") and hasattr(self.arg2, "label"):
+            if self.type == self.remove:
+                return '<Operation Remove: ' + self.arg1.label + '>'
+            elif self.type == self.insert:
+                return '<Operation Insert: ' + self.arg2.label + '>'
+            elif self.type == self.update:
+                return '<Operation Update: ' + self.arg1.label + ' to ' + self.arg2.label + '>'
+            else:
+                return '<Operation Match: ' + self.arg1.label + ' to ' + self.arg2.label + '>'
         else:
-            return '<Operation Match: ' + self.arg1.label + ' to ' + self.arg2.label + '>'
+            if self.type == self.remove:
+                return '<Operation Remove>'
+            elif self.type == self.insert:
+                return '<Operation Insert>'
+            elif self.type == self.update:
+                return '<Operation Update>'
+            else:
+                return '<Operation Match>'
 
     def __eq__(self, other):
         if other is None: return False
